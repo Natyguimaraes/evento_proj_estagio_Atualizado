@@ -1,32 +1,74 @@
-// backend/rotas/confirmacoes.js
 import express from 'express';
-import Confirmacao from '../model/confirmacao.js';
+import { PrismaClient } from '@prisma/client';
+import { sendWhatsAppMessage } from '../services/whatsappService.js';
 
 const router = express.Router();
+const prisma = new PrismaClient();
 
-// Rota para obter o status da confirmação de um convidado
-router.get('/:id', (req, res) => {
-    const { id } = req.params;
-    Confirmacao.obterConfirmacao(id, (erro, resultado) => {
-        if (erro) return res.status(500).json({ erro: 'Erro ao buscar confirmação' });
-        if (resultado.length === 0) return res.status(404).json({ erro: 'Convidado não encontrado' });
-        res.json(resultado[0]);
-    });
+// Criar um novo convidado e enviar mensagem de confirmação
+router.post('/', async (req, res) => {
+    try {
+        const { nome, email, telefone, acompanhantes } = req.body;
+        
+        const novoConvidado = await prisma.convidado.create({
+            data: {
+                nome,
+                email,
+                telefone,
+                status: 'pendente',
+                acompanhantes
+            }
+        });
+
+        const confirmacaoLink = `https://seusite.com/confirmar/${novoConvidado.id}`;
+        await sendWhatsAppMessage(telefone, nome, confirmacaoLink);
+
+        res.status(201).json(novoConvidado);
+    } catch (error) {
+        console.error('Erro ao adicionar convidado:', error);
+        res.status(500).json({ message: 'Erro ao adicionar convidado', error });
+    }
 });
 
-// Rota para confirmar ou negar presença
-router.put('/:id', (req, res) => {
-    const { id } = req.params;
-    const { confirmado } = req.body;
-
-    if (confirmado !== 0 && confirmado !== 1) {
-        return res.status(400).json({ erro: 'Valor inválido para confirmação' });
+// Buscar todos os convidados
+router.get('/', async (req, res) => {
+    try {
+        const convidados = await prisma.convidado.findMany();
+        res.json(convidados);
+    } catch (error) {
+        console.error('Erro ao buscar convidados:', error);
+        res.status(500).json({ message: 'Erro ao buscar convidados', error });
     }
+});
 
-    Confirmacao.confirmarPresenca(id, confirmado, (erro) => {
-        if (erro) return res.status(500).json({ erro: 'Erro ao atualizar confirmação' });
-        res.json({ mensagem: 'Confirmação atualizada com sucesso' });
-    });
+// Atualizar status do convidado e acompanhantes
+router.put('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { status, acompanhantes } = req.body;
+        
+        const convidadoAtualizado = await prisma.convidado.update({
+            where: { id: Number(id) },
+            data: { status, acompanhantes }
+        });
+
+        res.json(convidadoAtualizado);
+    } catch (error) {
+        console.error('Erro ao atualizar convidado:', error);
+        res.status(500).json({ message: 'Erro ao atualizar convidado', error });
+    }
+});
+
+// Excluir convidado
+router.delete('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        await prisma.convidado.delete({ where: { id: Number(id) } });
+        res.json({ message: 'Convidado removido com sucesso' });
+    } catch (error) {
+        console.error('Erro ao excluir convidado:', error);
+        res.status(500).json({ message: 'Erro ao excluir convidado', error });
+    }
 });
 
 export default router;
