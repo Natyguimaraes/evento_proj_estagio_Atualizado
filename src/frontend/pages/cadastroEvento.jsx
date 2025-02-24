@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import "../css/eventos.css"
 function CadastroEventos() {
     const [nome, setNome] = useState('');
     const [descricao, setDescricao] = useState('');
@@ -17,12 +17,12 @@ function CadastroEventos() {
     };
 
     return (
-        <div>
+        <div className="div-eventos">
             <h2>Cadastro de Eventos</h2>
-            <input type='text' placeholder='Nome do Evento' value={nome} onChange={e => setNome(e.target.value)} />
-            <input type='text' placeholder='Descrição' value={descricao} onChange={e => setDescricao(e.target.value)} />
-            <input type='datetime-local' value={dataEvento} onChange={e => setDataEvento(e.target.value)} />
-            <button onClick={handleCadastro}>Cadastrar</button>
+            <input className="input-cad-evento" type='text' placeholder='Nome do Evento' value={nome} onChange={e => setNome(e.target.value)} />
+            <input className="input-cad-evento" type='text' placeholder='Descrição' value={descricao} onChange={e => setDescricao(e.target.value)} />
+            <input className="input-cad-evento" type='datetime-local' value={dataEvento} onChange={e => setDataEvento(e.target.value)} />
+            <button className="button-evento" onClick={handleCadastro}>Cadastrar</button>
         </div>
     );
 }

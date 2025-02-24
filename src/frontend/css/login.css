@@ -1,0 +1,32 @@
+* {
+    font-family: arial;
+}
+
+.login-div {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    text-align: center;
+    margin: auto;
+    font-family: Arial;
+}
+
+.input-login {
+    border: none;
+    padding: 5px;
+    margin: 1px;
+    background-color: aliceblue;
+}
+
+.button-login {
+    border-radius: 5px;
+    border: none;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: rgb(167, 167, 167);
+}
+
+.button-login:hover {
+    cursor: pointer;
+}
+

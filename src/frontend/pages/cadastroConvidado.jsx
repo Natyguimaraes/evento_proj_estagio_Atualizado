@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import "../css/convidado.css";
 
 function CadastroConvidados() {
     const [nome, setNome] = useState('');
@@ -16,15 +17,14 @@ function CadastroConvidados() {
         if (resposta.ok) alert('Convidado cadastrado com sucesso');
         else alert(dados.erro);
     };
-
     return (
-        <div>
+        <div className="cad-convidado">
             <h2>Cadastro de Convidados</h2>
-            <input type='text' placeholder='Nome' value={nome} onChange={e => setNome(e.target.value)} />
-            <input type='text' placeholder='Telefone' value={telefone} onChange={e => setTelefone(e.target.value)} />
-            <input type='email' placeholder='Email' value={email} onChange={e => setEmail(e.target.value)} />
-            <input type='number' placeholder='ID do Evento' value={eventoId} onChange={e => setEventoId(e.target.value)} />
-            <button onClick={handleCadastro}>Cadastrar</button>
+            <input className="input-convidado" type='text' placeholder='Nome' value={nome} onChange={e => setNome(e.target.value)} />
+            <input className="input-convidado" type='text' placeholder='Telefone' value={telefone} onChange={e => setTelefone(e.target.value)} />
+            <input className="input-convidado" type='email' placeholder='Email' value={email} onChange={e => setEmail(e.target.value)} />
+            <input className="input-convidado" type='number' placeholder='ID do Evento' value={eventoId} onChange={e => setEventoId(e.target.value)} />
+            <button className="button-convidado" onClick={handleCadastro}>Cadastrar</button>
         </div>
     );
 }

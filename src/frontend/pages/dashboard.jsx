@@ -6,9 +6,9 @@ function Dashboard() {
             <h2>Painel Administrativo</h2>
             <nav>
                 <ul>
-                    <li><Link to='/cadastro-eventos'>Cadastro de Eventos</Link></li>
-                    <li><Link to='/cadastro-convidados'>Cadastro de Convidados</Link></li>
-                    <li><Link to='/confirmacoes'>Lista de Confirmação</Link></li>
+                    <li><Link to='/cadastroEvento'>Cadastro de Eventos</Link></li>
+                    <li><Link to='/cadastroConvidado'>Cadastro de Convidados</Link></li>
+                    <li><Link to='/confirmacao'>Lista de Confirmação</Link></li>
                 </ul>
             </nav>
         </div>

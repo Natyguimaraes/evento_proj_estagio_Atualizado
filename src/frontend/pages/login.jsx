@@ -1,6 +1,7 @@
 // frontend/src/pages/LoginAdministrador.js
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../css/login.css'
 
 function LoginAdministrador() {
     const [cpf, setCpf] = useState('');
@@ -17,18 +18,18 @@ function LoginAdministrador() {
         const dados = await resposta.json();
         if (resposta.ok) {
             alert('Login realizado com sucesso!');
-            navigate('/dashboard'); // Redireciona para o painel após login
+            navigate('/dashboard'); // 
         } else {
             alert(dados.erro);
         }
     };
 
     return (
-        <div>
+        <div className="login-div">
             <h2>Login do Administrador</h2>
-            <input type="text" placeholder="CPF" value={cpf} onChange={(e) => setCpf(e.target.value)} />
-            <input type="password" placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)} />
-            <button onClick={handleLogin}>Entrar</button>
+            <input className="input-login" type="text" placeholder="CPF" value={cpf} onChange={(e) => setCpf(e.target.value)} />
+            <input className="input-login" type="password" placeholder="Senha" value={senha} onChange={(e) => setSenha(e.target.value)} />
+            <button className="button-login" onClick={handleLogin}>Entrar</button>
         </div>
     );
 }
