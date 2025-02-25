@@ -1,4 +1,3 @@
-
 import banco from '../configuracao/banco.js';
 
 class Confirmacao {
@@ -20,3 +19,4 @@ class Confirmacao {
 }
 
 export default Confirmacao;
+

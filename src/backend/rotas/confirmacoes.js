@@ -1,14 +1,12 @@
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
-import { sendWhatsAppMessage } from '../services/whatsappService.js';
-
 const router = express.Router();
 const prisma = new PrismaClient();
 
 // Criar um novo convidado e enviar mensagem de confirmação
 router.post('/', async (req, res) => {
     try {
-        const { nome, email, telefone, acompanhantes } = req.body;
+        const { nome, email, telefone, acompanhantes, evento_id } = req.body;
         
         const novoConvidado = await prisma.convidado.create({
             data: {
@@ -16,7 +14,8 @@ router.post('/', async (req, res) => {
                 email,
                 telefone,
                 status: 'pendente',
-                acompanhantes
+                acompanhantes,
+                evento_id,
             }
         });
 
@@ -41,15 +40,37 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Atualizar status do convidado e acompanhantes
+// Buscar um único convidado pelo ID
+router.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const convidado = await prisma.convidado.findUnique({ where: { id: Number(id) } });
+
+        if (!convidado) {
+            return res.status(404).json({ message: 'Convidado não encontrado' });
+        }
+
+        res.json(convidado);
+    } catch (error) {
+        console.error('Erro ao buscar convidado:', error);
+        res.status(500).json({ message: 'Erro ao buscar convidado', error });
+    }
+});
+
+// Atualizar confirmação de presença
 router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { status, acompanhantes } = req.body;
+        const { confirmado, acompanhantes } = req.body;
         
+        const convidadoExistente = await prisma.convidado.findUnique({ where: { id: Number(id) } });
+        if (!convidadoExistente) {
+            return res.status(404).json({ message: 'Convidado não encontrado' });
+        }
+
         const convidadoAtualizado = await prisma.convidado.update({
             where: { id: Number(id) },
-            data: { status, acompanhantes }
+            data: { confirmado, acompanhantes },
         });
 
         res.json(convidadoAtualizado);
@@ -63,6 +84,11 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;
+        const convidadoExistente = await prisma.convidado.findUnique({ where: { id: Number(id) } });
+        if (!convidadoExistente) {
+            return res.status(404).json({ message: 'Convidado não encontrado' });
+        }
+
         await prisma.convidado.delete({ where: { id: Number(id) } });
         res.json({ message: 'Convidado removido com sucesso' });
     } catch (error) {
