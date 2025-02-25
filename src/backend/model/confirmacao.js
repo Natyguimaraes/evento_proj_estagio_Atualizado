@@ -1,19 +1,19 @@
-// backend/modelos/Confirmacao.js
+
 import banco from '../configuracao/banco.js';
 
 class Confirmacao {
-    static confirmarPresenca(convidado_id, confirmado, callback) {
+    static confirmarPresenca(convidados_id, confirmado, callback) {
         banco.query(
             'UPDATE convidados SET confirmado = ? WHERE id = ?',
-            [confirmado, convidado_id],
+            [confirmado, convidados_id],
             callback
         );
     }
 
-    static obterConfirmacao(convidado_id, callback) {
+    static obterConfirmacao(convidados_id, callback) {
         banco.query(
             'SELECT confirmado FROM convidados WHERE id = ?',
-            [convidado_id],
+            [convidados_id],
             callback
         );
     }

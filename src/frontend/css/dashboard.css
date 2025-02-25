@@ -1,0 +1,15 @@
+.painel {
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+}
+
+.cards{
+    border: 1px solid black;
+    display: flex;
+}
+
+ul li {
+    text-decoration: none;
+    text-transform: none;
+}

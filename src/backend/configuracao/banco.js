@@ -10,9 +10,9 @@ const conexao = mysql.createConnection({
     
     user: process.env.DB_USER || 'root',
   
-    password: process.env.DB_PASSWORD || '123456789',
+    password: process.env.DB_PASSWORD || '',
    
-    database: process.env.DB_NAME || 'sistema_eventos'
+    database: process.env.DB_NAME || 'teste'
 });
 
 conexao.connect(err => {

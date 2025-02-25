@@ -15,7 +15,7 @@ function App() {
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/cadastroConvidado" element={<CadastroConvidados />} />
                 <Route path="/cadastroEvento" element={<CadastroEventos />} />
-                <Route path="/confirmacao/:id" element={<Confirmacao />} />
+                <Route path="/confirmacao" element={<Confirmacao />} />
             </Routes>
         </Router>
     );

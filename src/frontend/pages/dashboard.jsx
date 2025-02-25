@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
+import '../css/dashboard.css'
 
 function Dashboard() {
     return (
-        <div>
+        <div className="painel">
             <h2>Painel Administrativo</h2>
+           <div className="cards">
             <nav>
                 <ul>
                     <li><Link to='/cadastroEvento'>Cadastro de Eventos</Link></li>
@@ -11,6 +13,7 @@ function Dashboard() {
                     <li><Link to='/confirmacao'>Lista de Confirmação</Link></li>
                 </ul>
             </nav>
+            </div>
         </div>
     );
 }
