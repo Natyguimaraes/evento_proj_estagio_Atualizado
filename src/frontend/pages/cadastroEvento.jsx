@@ -1,4 +1,4 @@
-// frontend/src/CadastroEventos.jsx
+
 import { useState } from 'react';
 import "../css/eventos.css";
 
@@ -6,8 +6,8 @@ function CadastroEventos() {
     const [nome, setNome] = useState('');
     const [descricao, setDescricao] = useState('');
     const [dataEvento, setDataEvento] = useState('');
-    const [error, setError] = useState(''); // Estado para mensagens de erro
-    const [success, setSuccess] = useState(''); // Estado para mensagens de sucesso
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState(''); 
 
     const handleCadastro = async () => {
         setError('');

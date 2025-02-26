@@ -1,4 +1,4 @@
-/* eventos.css */
+
 .eventos-container {
     display: flex;
     justify-content: center;
@@ -13,7 +13,7 @@
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 400px; /* Largura do formulário */
+    width: 400px; 
 }
 
 .div-eventos h2 {
@@ -23,7 +23,7 @@
 }
 
 .input-cad-evento {
-    width: calc(100% - 22px); /* Largura total - padding */
+    width: calc(100% - 22px); 
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
@@ -32,9 +32,9 @@
     font-size: 16px;
 }
 
-.descricao { /* Estilo específico para o textarea */
-    height: 100px; /* Altura maior para a descrição */
-    resize: vertical; /* Permite redimensionar verticalmente */
+.descricao { 
+    height: 100px; 
+    resize: vertical; 
 }
 
 .button-evento {
@@ -55,11 +55,11 @@
 .error-message {
     color: red;
     margin-bottom: 10px;
-    text-align: center; /* Centraliza a mensagem de erro */
+    text-align: center; 
 }
 
 .success-message {
     color: green;
     margin-bottom: 10px;
-    text-align: center; /* Centraliza a mensagem de sucesso */
+    text-align: center; 
 }

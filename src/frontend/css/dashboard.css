@@ -1,4 +1,4 @@
-/* dashboard.css */
+
 .painel {
     display: flex;
     flex-direction: column;
@@ -23,14 +23,14 @@
     display: flex;
     flex: 1;
     padding: 20px;
-    justify-content: center; /* Centraliza os cards horizontalmente */
-    align-items: center; /* Centraliza os cards verticalmente */
+    justify-content: center; 
+    align-items: center; 
 }
 
 .painel-principal {
     flex: 1;
     padding: 20px;
-    text-align: center; /* Centraliza o texto no painel principal */
+    text-align: center; 
 }
 
 .boas-vindas {
@@ -41,7 +41,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    justify-content: center; /* Centraliza os cards */
+    justify-content: center; 
 }
 
 .card {
@@ -78,7 +78,7 @@
 @media (max-width: 768px) {
     .conteudo {
         flex-direction: column;
-        align-items: center; /* Centraliza os cards verticalmente */
+        align-items: center; 
     }
 
     .card {

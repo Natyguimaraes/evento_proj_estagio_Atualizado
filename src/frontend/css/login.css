@@ -1,53 +1,44 @@
-/* login.css */
-.login-container {
-    display: flex;
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
-    min-height: 100vh; /* Garante que o container ocupa toda a altura da tela */
-    background-color: #f0f0f0; /* Cor de fundo */
-    font-family: sans-serif;
+
+.container {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    font-family: arial;
 }
 
-.login-div {
-    background-color: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
-    width: 350px; /* Largura do formulário */
-    text-align: center; /* Centraliza o texto dentro do formulário */
-}
 
-.login-div h2 {
+h2 {
+    color: #333;
     margin-bottom: 20px;
-    color: #333; /* Cor do título */
 }
 
-.input-login {
-    width: calc(100% - 22px); /* Largura total - padding */
+
+input {
+    width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
+    margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box; /* Inclui padding na largura */
     font-size: 16px;
 }
 
-.button-login {
+.login-button {
     width: 100%;
     padding: 10px;
-    background-color: #007bff; /* Cor do botão */
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    margin-top: 10px;
 }
 
-.button-login:hover {
-    background-color: #0056b3; /* Cor do botão ao passar o mouse */
-}
-
-.error-message {
-    color: red;
-    margin-bottom: 10px;
+.login-button:hover {
+    background-color: #0056b3;
 }

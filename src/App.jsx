@@ -1,4 +1,4 @@
-// frontend/src/App.jsx
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LoginAdministrador from './frontend/pages/login';
 import CadastroConvidados from './frontend/pages/cadastroConvidado';
