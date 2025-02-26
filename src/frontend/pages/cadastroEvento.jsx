@@ -1,3 +1,4 @@
+// frontend/src/CadastroEventos.jsx
 import { useState } from 'react';
 import "../css/eventos.css";
 
@@ -8,10 +9,9 @@ function CadastroEventos() {
     const [error, setError] = useState(''); // Estado para mensagens de erro
     const [success, setSuccess] = useState(''); // Estado para mensagens de sucesso
 
-
     const handleCadastro = async () => {
-        setError(''); // Limpa mensagens de erro
-        setSuccess(''); // Limpa mensagens de sucesso
+        setError('');
+        setSuccess('');
 
         if (!nome || !descricao || !dataEvento) {
             setError("Todos os campos são obrigatórios.");
@@ -29,7 +29,7 @@ function CadastroEventos() {
 
             if (resposta.ok) {
                 setSuccess('Evento cadastrado com sucesso!');
-                setNome(''); // Limpa os campos após o cadastro
+                setNome('');
                 setDescricao('');
                 setDataEvento('');
             } else {
@@ -42,29 +42,29 @@ function CadastroEventos() {
     };
 
     return (
-        <div className="eventos-container"> {/* Container principal */}
-            <div className="div-eventos"> {/* Div para o formulário */}
+        <div className="eventos-container">
+            <div className="div-eventos">
                 <h2>Cadastro de Eventos</h2>
 
-                {error && <p className="error-message">{error}</p>} {/* Mensagem de erro */}
-                {success && <p className="success-message">{success}</p>} {/* Mensagem de sucesso */}
+                {error && <p className="error-message">{error}</p>}
+                {success && <p className="success-message">{success}</p>}
 
                 <input
                     className="input-cad-evento"
-                    type='text'
-                    placeholder='Nome do Evento'
+                    type="text"
+                    placeholder="Nome do Evento"
                     value={nome}
                     onChange={e => setNome(e.target.value)}
                 />
-                <textarea  // Use textarea para descrição
+                <textarea
                     className="input-cad-evento descricao"
-                    placeholder='Descrição'
+                    placeholder="Descrição"
                     value={descricao}
                     onChange={e => setDescricao(e.target.value)}
                 />
                 <input
                     className="input-cad-evento"
-                    type='datetime-local'
+                    type="datetime-local"
                     value={dataEvento}
                     onChange={e => setDataEvento(e.target.value)}
                 />

@@ -1,11 +1,27 @@
-import banco from '../configuracao/banco.js';
+import conexao from '../configuracao/banco.js';
 
-class Administrador {
-    static autenticar(cpf, senha, callback) {
-        banco.query('SELECT * FROM administradores WHERE cpf = ? AND senha = ?', [cpf, senha], (erro, resultados) => {
-            if (erro) callback(erro, null);
-            else callback(null, resultados[0]);
-        });
-    }
+export function findByCpfAndSenha(cpf, senha) {
+    return new Promise((resolve, reject) => {
+        conexao.query(
+            'SELECT * FROM administradores WHERE cpf = ? AND senha = ?', 
+            [cpf, senha], 
+            (err, results) => {
+                if (err) return reject(err);
+                resolve(results[0] || null);
+            }
+        );
+    });
 }
-export default Administrador;
+
+export function createAdmin(nome, cpf, senha) {
+    return new Promise((resolve, reject) => {
+        conexao.query(
+            'INSERT INTO administradores (nome, cpf, senha) VALUES (?, ?, ?)', 
+            [nome, cpf, senha], 
+            (err, result) => {
+                if (err) return reject(err);
+                resolve(result);
+            }
+        );
+    });
+}

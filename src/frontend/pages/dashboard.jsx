@@ -16,14 +16,14 @@ function Dashboard() {
 
                     <div className="cards">
                         <div className="card">
-                            <h3>Eventos Cadastrados</h3>
-                            <p>Visualize, edite ou exclua eventos existentes.</p>
+                            <h3>EVENTOS</h3>
+                            <p>Cadastre aqui seu evento</p>
                             <Link to='/cadastroEvento' className="botao-card">Gerenciar</Link>
                         </div>
 
                         <div className="card">
                             <h3>Convidados</h3>
-                            <p>Gerencie a lista de convidados para seus eventos.</p>
+                            <p>Cadastre aqui seus convidados</p>
                             <Link to='/cadastroConvidado' className="botao-card">Gerenciar</Link>
                         </div>
 

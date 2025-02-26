@@ -1,28 +1,21 @@
 import express from 'express';
 import cors from 'cors';
-import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
 
-import rotasAdministradores from './rotas/administradores.js';
-import rotasEventos from './rotas/eventos.js';
-import rotasConvidados from './rotas/convidados.js';
-import rotasConfirmacoes from './rotas/confirmacoes.js';
+// Importação correta das rotas
+import eventoRoutes from './rotas/eventos.js';
+import adminRoutes from './rotas/administradores.js';
+import convidadoRoutes from './rotas/convidados.js'; // Caso tenha um arquivo para convidados
 
-dotenv.config();
 const app = express();
 
+app.use(express.json());
 app.use(cors());
-app.use(bodyParser.json());
 
+// Usando as rotas corretamente
+app.use('/api/eventos', eventoRoutes);
+app.use('/api/administradores', adminRoutes);
+app.use('/api/convidados', convidadoRoutes); // Caso tenha essa rota separada
 
-app.use('/api/administradores', rotasAdministradores);
-app.use('/api/eventos', rotasEventos);
-app.use('/api/convidados', rotasConvidados);
-app.use('/api/confirmacoes', rotasConfirmacoes);
-
-
-// eslint-disable-next-line no-undef
-const PORTA = process.env.PORT || 5000;
-app.listen(PORTA, () => {
-    console.log(`Servidor rodando na porta ${PORTA}`);
+app.listen(5000, () => {
+    console.log(`Servidor rodando na porta 5000`);
 });

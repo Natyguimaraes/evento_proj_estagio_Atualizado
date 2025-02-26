@@ -1,19 +1,24 @@
+// backend/rotas/eventos.js
 import express from 'express';
-import Evento from '../model/evento.js';
+import {
+    createEventoController,
+    getAllEventos,
+    updateEventoController,
+    deleteEventoController
+} from '../controller/evento.js';
+
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    Evento.listar((erro, resultados) => {
-        if (erro) return res.status(500).json({ erro: 'Erro no servidor' });
-        res.json(resultados);
-    });
-});
+// Rota para obter todos os eventos
+router.get('/', getAllEventos);
 
-router.post('/', (req, res) => {
-    const { nome, descricao, data_evento } = req.body;
-    Evento.criar(nome, descricao, data_evento, (erro) => {
-        if (erro) return res.status(500).json({ erro: 'Erro no servidor' });
-        res.json({ mensagem: 'Evento criado com sucesso' });
-    });
-});
+// Rota para cadastrar um novo evento
+router.post('/', createEventoController);
+
+// Rota para atualizar um evento
+router.put('/:id', updateEventoController);
+
+// Rota para excluir um evento
+router.delete('/:id', deleteEventoController);
+
 export default router;
