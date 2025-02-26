@@ -1,100 +1,95 @@
 import express from 'express';
-import { PrismaClient } from '@prisma/client';
+import Convidado from '../model/confirmacao.js'; // Importe o modelo Convidado
+
 const router = express.Router();
-const prisma = new PrismaClient();
 
 // Criar um novo convidado e enviar mensagem de confirmação
-router.post('/', async (req, res) => {
-    try {
-        const { nome, email, telefone, acompanhantes, evento_id } = req.body;
-        
-        const novoConvidado = await prisma.convidado.create({
-            data: {
-                nome,
-                email,
-                telefone,
-                status: 'pendente',
-                acompanhantes,
-                evento_id,
-            }
-        });
+router.post('/', (req, res) => { // Removido o async/await
+    const { nome, email, telefone, acompanhantes, evento_id } = req.body;
+
+    Convidado.criar(nome, telefone, email, acompanhantes, evento_id, (erro, novoConvidado) => { // Callback
+        if (erro) {
+            console.error('Erro ao adicionar convidado:', erro);
+            return res.status(500).json({ message: 'Erro ao adicionar convidado', error: erro.message }); // Envia a mensagem de erro
+        }
 
         const confirmacaoLink = `https://seusite.com/confirmar/${novoConvidado.id}`;
-        await sendWhatsAppMessage(telefone, nome, confirmacaoLink);
+        // eslint-disable-next-line no-undef
+        sendWhatsAppMessage(telefone, nome, confirmacaoLink); // Mantido (presume-se que esteja definida)
 
         res.status(201).json(novoConvidado);
-    } catch (error) {
-        console.error('Erro ao adicionar convidado:', error);
-        res.status(500).json({ message: 'Erro ao adicionar convidado', error });
-    }
+    });
 });
 
 // Buscar todos os convidados
-router.get('/', async (req, res) => {
-    try {
-        const convidados = await prisma.convidado.findMany();
+router.get('/', (req, res) => { // Removido o async/await
+    Convidado.listar((erro, convidados) => { // Callback
+        if (erro) {
+            console.error('Erro ao buscar convidados:', erro);
+            return res.status(500).json({ message: 'Erro ao buscar convidados', error: erro.message }); // Envia a mensagem de erro
+        }
         res.json(convidados);
-    } catch (error) {
-        console.error('Erro ao buscar convidados:', error);
-        res.status(500).json({ message: 'Erro ao buscar convidados', error });
-    }
+    });
 });
 
 // Buscar um único convidado pelo ID
-router.get('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const convidado = await prisma.convidado.findUnique({ where: { id: Number(id) } });
+router.get('/:id', (req, res) => { // Removido o async/await
+    const { id } = req.params;
+
+    Convidado.obterPorId(id, (erro, convidado) => { // Callback
+        if (erro) {
+            console.error('Erro ao buscar convidado:', erro);
+            return res.status(500).json({ message: 'Erro ao buscar convidado', error: erro.message }); // Envia a mensagem de erro
+        }
 
         if (!convidado) {
             return res.status(404).json({ message: 'Convidado não encontrado' });
         }
 
         res.json(convidado);
-    } catch (error) {
-        console.error('Erro ao buscar convidado:', error);
-        res.status(500).json({ message: 'Erro ao buscar convidado', error });
-    }
+    });
 });
 
 // Atualizar confirmação de presença
-router.put('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { confirmado, acompanhantes } = req.body;
-        
-        const convidadoExistente = await prisma.convidado.findUnique({ where: { id: Number(id) } });
-        if (!convidadoExistente) {
-            return res.status(404).json({ message: 'Convidado não encontrado' });
+router.put('/:id', (req, res) => {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+        return res.status(400).json({ message: 'ID inválido' });
+    }
+
+    const { nome, telefone, email, acompanhante, evento_id, confirmado } = req.body;
+
+    // Validação de campos (exemplo básico)
+    if (!nome || !telefone || !email || !acompanhante || !evento_id || confirmado === undefined) {
+        return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+    }
+
+    Convidado.atualizar(id, nome, telefone, email, acompanhante, evento_id, confirmado, (erro, resultado) => {
+        if (erro) {
+            console.error('Erro na rota PUT:', erro);
+            return res.status(500).json({ message: erro.message }); // Envia a mensagem de erro do objeto erro
         }
 
-        const convidadoAtualizado = await prisma.convidado.update({
-            where: { id: Number(id) },
-            data: { confirmado, acompanhantes },
-        });
-
-        res.json(convidadoAtualizado);
-    } catch (error) {
-        console.error('Erro ao atualizar convidado:', error);
-        res.status(500).json({ message: 'Erro ao atualizar convidado', error });
-    }
+        console.log('Resultado da atualização:', resultado);
+        res.json(resultado);
+    });
 });
 
-// Excluir convidado
-router.delete('/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const convidadoExistente = await prisma.convidado.findUnique({ where: { id: Number(id) } });
-        if (!convidadoExistente) {
-            return res.status(404).json({ message: 'Convidado não encontrado' });
+router.delete('/:id', (req, res) => {
+    const id = parseInt(req.params.id, 10);
+    if (isNaN(id)) {
+        return res.status(400).json({ message: 'ID inválido' });
+    }
+
+    Convidado.excluir(id, (erro, resultado) => {
+        if (erro) {
+            console.error("ERRO NA ROTA DELETE:", erro);
+            return res.status(500).json({ message: erro.message }); // Envia a mensagem de erro do objeto erro
         }
 
-        await prisma.convidado.delete({ where: { id: Number(id) } });
-        res.json({ message: 'Convidado removido com sucesso' });
-    } catch (error) {
-        console.error('Erro ao excluir convidado:', error);
-        res.status(500).json({ message: 'Erro ao excluir convidado', error });
-    }
+        console.log("Resultado da exclusão:", resultado);
+        res.json(resultado);
+    });
 });
 
 export default router;

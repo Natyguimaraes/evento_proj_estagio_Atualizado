@@ -1,5 +1,5 @@
 import express from 'express';
-import Convidado from '../model/convidado.js';
+import Convidado from '../model/confirmacao.js';
 const router = express.Router();
 
 router.get('/', (req, res) => {

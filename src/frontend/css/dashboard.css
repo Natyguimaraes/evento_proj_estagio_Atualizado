@@ -1,15 +1,88 @@
+/* dashboard.css */
 .painel {
-    border: 1px solid black;
     display: flex;
     flex-direction: column;
+    min-height: 100vh;
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
 }
 
-.cards{
-    border: 1px solid black;
+.cabecalho {
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.cabecalho h1 {
+    margin-bottom: 10px;
+}
+
+.conteudo {
     display: flex;
+    flex: 1;
+    padding: 20px;
+    justify-content: center; /* Centraliza os cards horizontalmente */
+    align-items: center; /* Centraliza os cards verticalmente */
 }
 
-ul li {
+.painel-principal {
+    flex: 1;
+    padding: 20px;
+    text-align: center; /* Centraliza o texto no painel principal */
+}
+
+.boas-vindas {
+    margin-bottom: 20px;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center; /* Centraliza os cards */
+}
+
+.card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    text-align: center;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+}
+
+.botao-card {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
     text-decoration: none;
-    text-transform: none;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.rodape {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: auto;
+}
+
+@media (max-width: 768px) {
+    .conteudo {
+        flex-direction: column;
+        align-items: center; /* Centraliza os cards verticalmente */
+    }
+
+    .card {
+        width: 90%;
+        margin: 10px auto;
+    }
 }

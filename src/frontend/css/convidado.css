@@ -1,24 +1,61 @@
-.cad-convidado {
+/* convidado.css */
+
+.convidado-container {
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    width: 500px;
-    margin: auto;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    font-family: sans-serif;
+}
+
+.cad-convidado {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.cad-convidado h2 {
+    margin-bottom: 20px;
     text-align: center;
+    color: #333;
 }
 
 .input-convidado {
-    padding: 5px;
-    margin: 5px;
-    border: none;
-    background-color: aliceblue;
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
 }
 
 .button-convidado {
-padding: 10px;
-margin: 5px;
-background-color: rgb(167, 167, 167);
-font-weight: bold;
-border: none;
-border-radius: 8px;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.button-convidado:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    color: red;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.success-message {
+    color: green;
+    margin-bottom: 10px;
+    text-align: center;
 }
