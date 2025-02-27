@@ -35,7 +35,7 @@ function CadastroConvidados() {
       const dados = await resposta.json();
 
       if (resposta.ok) {
-        setSuccess("Convidado cadastrado com sucesso!");
+        alert("Convidado cadastrado com sucesso!");
         setNome("");
         setTelefone("");
         setEmail("");
@@ -51,53 +51,51 @@ function CadastroConvidados() {
   };
 
   return (
-    <div className="convidado-container">
-      <div className="cad-convidado">
-        <h2>Cadastro de Convidados</h2>
+    
+      <><div className="cabecalho">
+      <h1>SISTEMA EVENTOS</h1>
+    </div><div className="convidado-container">
+        <div className="cad-convidado">
+          <h2>Cadastro de Convidados</h2>
 
-        {error && <p className="error-message">{error}</p>}
-        {success && <p className="success-message">{success}</p>}
+          {error && <p className="error-message">{error}</p>}
+          {success && <p className="success-message">{success}</p>}
 
-        <input
-          className="input-convidado"
-          type="text"
-          placeholder="Nome"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-        />
-        <input
-          className="input-convidado"
-          type="text"
-          placeholder="Telefone"
-          value={telefone}
-          onChange={(e) => setTelefone(e.target.value)}
-        />
-        <input
-          className="input-convidado"
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          className="input-convidado"
-          type="number"
-          placeholder="Número de acompanhantes"
-          value={acompanhante}
-          onChange={(e) => setAcompanhante(e.target.value)}
-        />
-        <input
-          className="input-convidado"
-          type="number"
-          placeholder="ID do Evento"
-          value={eventoId}
-          onChange={(e) => setEventoId(e.target.value)}
-        />
-        <button className="button-convidado" onClick={handleCadastro}>
-          Cadastrar
-        </button>
-      </div>
-    </div>
+          <input
+            className="input-convidado"
+            type="text"
+            placeholder="Nome"
+            value={nome}
+            onChange={(e) => setNome(e.target.value)} />
+          <input
+            className="input-convidado"
+            type="text"
+            placeholder="Telefone"
+            value={telefone}
+            onChange={(e) => setTelefone(e.target.value)} />
+          <input
+            className="input-convidado"
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)} />
+          <input
+            className="input-convidado"
+            type="number"
+            placeholder="Número de acompanhantes"
+            value={acompanhante}
+            onChange={(e) => setAcompanhante(e.target.value)} />
+          <input
+            className="input-convidado"
+            type="number"
+            placeholder="ID do Evento"
+            value={eventoId}
+            onChange={(e) => setEventoId(e.target.value)} />
+          <button className="button-convidado" onClick={handleCadastro}>
+            Cadastrar
+          </button>
+        </div>
+      </div></>
   );
 }
 

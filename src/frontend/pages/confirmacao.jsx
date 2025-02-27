@@ -118,64 +118,80 @@ function Confirmacao() {
     }
   };
 
-  const enviarWhatsapp = (telefone, nome, evento_id) => {
+  const enviarWhatsapp = (telefone, nome, evento_id, id) => {
     const nomeEvento =
-      eventos.find((e) => Number(e.id) === Number(evento_id))?.nome ||
-      "Evento não encontrado";
-    const mensagem = `Olá ${nome}, você está convidado para o evento "${nomeEvento}"! Por favor, confirme sua presença.`;
-    const url = `https://wa.me/${telefone}?text=${encodeURIComponent(
-      mensagem
-    )}`;
-    window.open(url, "_blank");
+      eventos.find((e) => e.id === evento_id)?.nome || "Evento";
+    const linkConfirmacao = `http://localhost:3000/confirmacao/${id}`;
+    const mensagem = `Olá ${nome}, você está convidado para o evento "${nomeEvento}"! Confirme sua presença aqui: ${linkConfirmacao}`;
+    window.open(
+      `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`,
+      "_blank"
+    );
   };
 
   return (
     <div className="confirmacao-container">
       <h1>Lista de Convidados por Evento</h1>
       {loading ? (
-        <p>Carregando dados...</p>
+        <p>Carregando...</p>
       ) : (
-        eventos.map((evento) => (
-          <div className="convidado-card" key={evento.id}>
-            <div className="card-header">
+        eventos.map((evento) => {
+          const convidadosEvento = convidados.filter(
+            (c) => c.evento_id === evento.id
+          );
+          const totalConvidados = convidadosEvento.length;
+          const totalAcompanhantes = convidadosEvento.reduce(
+            (acc, c) => acc + (Number(c.acompanhante) || 0),
+            0
+          );
+          const totalParticipantes = totalConvidados + totalAcompanhantes;
+
+          const confirmados = convidadosEvento.filter(
+            (c) => c.confirmado
+          ).length;
+          const pendentes = convidadosEvento.filter(
+            (c) => c.confirmado === false
+          ).length;
+
+          return (
+            <div className="convidado-card" key={evento.id}>
               <h3>{evento.nome}</h3>
-            </div>
-            <div className="card-content">
-              {convidados
-                .filter(
-                  (convidado) =>
-                    Number(convidado.evento_id) === Number(evento.id)
-                )
-                .map((convidado) => (
+              <p>Total de Convidados e acompanhantes: {totalParticipantes}</p>
+              <p>Confirmados: {confirmados}</p>
+              <p>Pendentes: {pendentes}</p>
+              <div className="card-content">
+                {convidadosEvento.map((convidado) => (
                   <div key={convidado.id} className="convidado-item">
                     {editIndex === convidado.id ? (
-                      <div>
+                      <div className="edit-form">
                         <input
                           type="text"
                           name="nome"
-                          value={editData.nome || ""}
+                          value={editData.nome}
                           onChange={handleChange}
                         />
                         <input
                           type="text"
                           name="telefone"
-                          value={editData.telefone || ""}
+                          value={editData.telefone}
                           onChange={handleChange}
                         />
                         <input
                           type="email"
                           name="email"
-                          value={editData.email || ""}
+                          value={editData.email}
                           onChange={handleChange}
                         />
                         <input
                           type="number"
                           name="acompanhante"
-                          value={editData.acompanhante || 0}
+                          value={editData.acompanhante}
                           onChange={handleChange}
                         />
-
                         <button onClick={handleUpdate}>Salvar</button>
+                        <button onClick={() => setEditIndex(null)}>
+                          Cancelar
+                        </button>
                       </div>
                     ) : (
                       <>
@@ -183,14 +199,8 @@ function Confirmacao() {
                           <strong>Nome:</strong> {convidado.nome}
                         </p>
                         <p>
-                          <strong>Telefone:</strong> {convidado.telefone}
-                        </p>
-                        <p>
-                          <strong>Email:</strong> {convidado.email}
-                        </p>
-                        <p>
-                          <strong>Acompanhantes:</strong>{" "}
-                          {convidado.acompanhante}
+                          <strong>Confirmado:</strong>{" "}
+                          {convidado.confirmado ? "Sim" : "Não"}
                         </p>
                         <div className="acoes-card">
                           <FaEdit onClick={() => handleEdit(convidado.id)} />
@@ -200,7 +210,8 @@ function Confirmacao() {
                               enviarWhatsapp(
                                 convidado.telefone,
                                 convidado.nome,
-                                evento.id
+                                evento.id,
+                                convidado.id
                               )
                             }
                           />
@@ -209,9 +220,10 @@ function Confirmacao() {
                     )}
                   </div>
                 ))}
+              </div>
             </div>
-          </div>
-        ))
+          );
+        })
       )}
     </div>
   );

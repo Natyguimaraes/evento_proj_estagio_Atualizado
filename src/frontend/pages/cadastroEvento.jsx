@@ -28,51 +28,52 @@ function CadastroEventos() {
             const dados = await resposta.json();
 
             if (resposta.ok) {
-                setSuccess('Evento cadastrado com sucesso!');
+                alert('Evento cadastrado com sucesso!');
                 setNome('');
                 setDescricao('');
                 setDataEvento('');
             } else {
-                setError(dados.erro || 'Erro ao cadastrar evento.');
+                alert(dados.erro || 'Erro ao cadastrar evento.');
             }
-        } catch (err) {
-            console.error("Erro na requisição:", err);
-            setError('Erro ao cadastrar evento. Tente novamente mais tarde.');
-        }
+            } catch (err) {
+                console.error("Erro na requisição:", err);
+                alert('Erro ao cadastrar evento. Tente novamente mais tarde.');
+            }
+            
     };
 
     return (
-        <div className="eventos-container">
-            <div className="div-eventos">
-                <h2>Cadastro de Eventos</h2>
 
-                {error && <p className="error-message">{error}</p>}
-                {success && <p className="success-message">{success}</p>}
+        <><div className="cabecalho">
+            <h1>SISTEMA EVENTOS</h1>
+        </div><div className="eventos-container">
+                <div className="div-eventos">
+                    <h2>Cadastro de Eventos</h2>
 
-                <input
-                    className="input-cad-evento"
-                    type="text"
-                    placeholder="Nome do Evento"
-                    value={nome}
-                    onChange={e => setNome(e.target.value)}
-                />
-                <textarea
-                    className="input-cad-evento descricao"
-                    placeholder="Descrição"
-                    value={descricao}
-                    onChange={e => setDescricao(e.target.value)}
-                />
-                <input
-                    className="input-cad-evento"
-                    type="datetime-local"
-                    value={dataEvento}
-                    onChange={e => setDataEvento(e.target.value)}
-                />
-                <button className="button-evento" onClick={handleCadastro}>
-                    Cadastrar
-                </button>
-            </div>
-        </div>
+                    {error && <p className="error-message">{error}</p>}
+                    {success && <p className="success-message">{success}</p>}
+
+                    <input
+                        className="input-cad-evento"
+                        type="text"
+                        placeholder="Nome do Evento"
+                        value={nome}
+                        onChange={e => setNome(e.target.value)} />
+                    <textarea
+                        className="input-cad-evento descricao"
+                        placeholder="Descrição"
+                        value={descricao}
+                        onChange={e => setDescricao(e.target.value)} />
+                    <input
+                        className="input-cad-evento"
+                        type="datetime-local"
+                        value={dataEvento}
+                        onChange={e => setDataEvento(e.target.value)} />
+                    <button className="button-evento" onClick={handleCadastro}>
+                        Cadastrar
+                    </button>
+                </div>
+            </div></>
     );
 }
 

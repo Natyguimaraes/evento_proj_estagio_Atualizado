@@ -42,45 +42,45 @@ function LoginAdministrador() {
   };
 
   return (
-    <div className="container">
-      <h2>
-        {!isLogin ? "Cadastro de Administrador" : "Login de Administrador"}
-      </h2>
-      <form onSubmit={handleSubmit}>
-        {!isLogin && (
+   
+      <><div className="cabecalho">
+      <h1>SISTEMA EVENTOS</h1>
+    </div><div className="container">
+        <h2>
+          {!isLogin ? "Cadastro de Administrador" : "Login de Administrador"}
+        </h2>
+        <form onSubmit={handleSubmit}>
+          {!isLogin && (
+            <input
+              type="text"
+              placeholder="Nome"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required />
+          )}
           <input
             type="text"
-            placeholder="Nome"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            required
-          />
-        )}
-        <input
-          type="text"
-          placeholder="CPF"
-          value={cpf}
-          onChange={(e) => setCpf(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Senha"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-          required
-        />
-        <button className="login-button" type="submit">
-          {isLogin ? "Entrar" : "Cadastrar"}
+            placeholder="CPF"
+            value={cpf}
+            onChange={(e) => setCpf(e.target.value)}
+            required />
+          <input
+            type="password"
+            placeholder="Senha"
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
+            required />
+          <button className="login-button" type="submit">
+            {isLogin ? "Entrar" : "Cadastrar"}
+          </button>
+        </form>
+        {message && <p>{message}</p>}
+        <button className="login-button" onClick={() => setIsLogin(!isLogin)}>
+          {isLogin
+            ? "Ainda não tem conta? Cadastre-se"
+            : "Já tem conta? Faça login"}
         </button>
-      </form>
-      {message && <p>{message}</p>}
-      <button className="login-button" onClick={() => setIsLogin(!isLogin)}>
-        {isLogin
-          ? "Ainda não tem conta? Cadastre-se"
-          : "Já tem conta? Faça login"}
-      </button>
-    </div>
+      </div></>
   );
 }
 

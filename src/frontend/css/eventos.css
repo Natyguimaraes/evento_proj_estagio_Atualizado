@@ -3,9 +3,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 80vh;
     background-color: #f0f0f0;
     font-family: sans-serif;
+}
+
+.cabecalho {
+    background-color: #007bff;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-family: arial;
 }
 
 .div-eventos {
@@ -38,7 +46,7 @@
 }
 
 .button-evento {
-    width: 100%;
+    width: 95%;
     padding: 10px;
     background-color: #007bff;
     color: white;
