@@ -10,6 +10,7 @@ function LoginAdministrador() {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");

@@ -56,6 +56,10 @@ export async function updateConvidado(req, res) {
   const { id } = req.params;
   const novosDados = req.body;
 
+  if (novosDados.status) {
+    novosDados.confirmado = novosDados.status === 'sim';
+  }
+  
   update(id, novosDados, (err, result) => {
     if (err) {
       res.status(500).json({ error: err.message });

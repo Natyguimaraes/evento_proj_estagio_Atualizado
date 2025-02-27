@@ -119,15 +119,24 @@ function Confirmacao() {
   };
 
   const enviarWhatsapp = (telefone, nome, evento_id, id) => {
-    const nomeEvento =
-      eventos.find((e) => e.id === evento_id)?.nome || "Evento";
-    const linkConfirmacao = `http://localhost:3000/confirmacao/${id}`;
-    const mensagem = `Olá ${nome}, você está convidado para o evento "${nomeEvento}"! Confirme sua presença aqui: ${linkConfirmacao}`;
-    window.open(
-      `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`,
-      "_blank"
-    );
+    const nomeEvento = eventos.find((e) => e.id === evento_id)?.nome || "Evento";
+    const linkConfirmacaoSim = `http://localhost:5000/api/convidados/${id}/confirmacao?status=sim`;
+    const linkConfirmacaoNao = `http://localhost:5000/api/convidados/${id}/confirmacao?status=nao`;
+
+  
+    const mensagem = `Olá ${nome}! Você está convidado para o evento *"${nomeEvento}"*!
+  
+  Por favor, confirme sua presença:
+  
+  *Vou participar:* [Clique aqui](${linkConfirmacaoSim})
+  
+  *Não vou* [Clique aqui](${linkConfirmacaoNao})
+  
+  Esperamos por você!`;
+  
+    window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`, "_blank");
   };
+  
 
   return (
     <div className="confirmacao-container">

@@ -8,6 +8,7 @@ import {
 
 const router = express.Router();
 
+// Rota para obter todos os convidados
 router.get("/", (req, res) => {
   read((err, convidados) => {
     if (err) {
@@ -18,6 +19,7 @@ router.get("/", (req, res) => {
   });
 });
 
+// Rota para obter um convidado específico
 router.get("/:id", (req, res) => {
   const { id } = req.params;
 
@@ -37,6 +39,8 @@ router.get("/:id", (req, res) => {
     res.json(convidado);
   });
 });
+
+// Rota para adicionar um novo convidado
 router.post("/", async (req, res) => {
   const { nome, telefone, email, acompanhante, evento_id } = req.body;
   try {
@@ -49,6 +53,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Rota para atualizar um convidado
 router.put("/:id", (req, res) => {
   const { id } = req.params;
   const novosDados = req.body;
@@ -71,6 +76,7 @@ router.put("/:id", (req, res) => {
   });
 });
 
+// Rota para excluir um convidado
 router.delete("/:id", (req, res) => {
   const { id } = req.params;
 
@@ -89,4 +95,44 @@ router.delete("/:id", (req, res) => {
   });
 });
 
+// Nova Rota para Atualizar a Confirmação de Presença
+// A URL deve ser algo como: /api/convidados/1/confirmacao?status=sim
+router.get("/:id/confirmacao", async (req, res) => {
+  const { id } = req.params; // Obtém o ID do convidado
+  const { status } = req.query; // Obtém o status do parâmetro de consulta
+
+  // Verifica se o status foi fornecido
+  if (!status) {
+    return res.status(400).json({ erro: "Parâmetro 'status' não fornecido." });
+  }
+
+  try {
+    const confirmado = status === "sim"; // Define se o convidado confirmou presença
+
+    // Atualiza a confirmação no banco de dados
+    const result = await new Promise((resolve, reject) => {
+      update(id, { confirmado }, (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(result);
+      });
+    });
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ erro: "Convidado não encontrado." });
+    }
+
+    // Responde com uma mensagem de confirmação
+    res.send(
+      `<h1>Confirmação recebida!</h1><p>Você escolheu: <strong>${confirmado ? "Vou participar" : "Não vou"}</strong>.</p>`
+    );
+  } catch (error) {
+    console.error("Erro ao processar confirmação:", error);
+    res.status(500).json({ erro: "Erro ao processar confirmação." });
+  }
+});
+
+
 export default router;
+
