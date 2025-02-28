@@ -122,7 +122,6 @@ router.get("/:id/confirmacao", async (req, res) => {
     if (result.affectedRows === 0) {
       return res.status(404).json({ erro: "Convidado não encontrado." });
     }
-
     // Responde com uma mensagem de confirmação
     res.send(
       `<h1>Confirmação recebida!</h1><p>Você escolheu: <strong>${confirmado ? "Vou participar" : "Não vou"}</strong>.</p>`
