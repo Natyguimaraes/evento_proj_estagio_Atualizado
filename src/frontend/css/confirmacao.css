@@ -1,13 +1,66 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
 
-  /* no seu arquivo CSS (confirmacao.css) */
-.switch input:checked + .slider {
-    background-color: #4CAF50;
-  }
-  
-  .switch input:checked + .slider:before {
-    transform: translateX(14px);
-  }
+.titulo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.subtitulo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #27ae60;
+  margin-bottom: 15px;
+}
+
+.mensagem-carregando,
+.mensagem-erro {
+  text-align: center;
+  font-size: 18px;
+  color: red;
+}
+
+.eventos-lista {
+  margin-top: 20px;
+}
+
+.eventos-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+.evento-card {
+  background: #f4f4f4;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  width: 250px;
+}
+
+.evento-titulo {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.evento-descricao {
+  font-size: 14px;
+  color: #555;
+}
+
+.evento-data,
+.evento-participantes {
+  font-size: 14px;
+  color: #777;
+  margin-top: 5px;
+}
+
   

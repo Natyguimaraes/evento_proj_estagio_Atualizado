@@ -63,7 +63,7 @@ function LoginAdministrador() {
         {message && <p>{message}</p>}
         
         {/* Botão para ir para a tela de Cadastro de Administrador */}
-        <button className="login-button" onClick={() => navigate("/eventos")}>
+        <button className="login-button" onClick={() => navigate("/cadastro")}>
           Ainda não tem conta? Cadastre-se
         </button>
       </div>
