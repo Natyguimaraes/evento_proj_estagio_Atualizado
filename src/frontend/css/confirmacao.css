@@ -1,73 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-.confirmacao-container {
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f0f0f0;
-    font-family: sans-serif;
-    padding: 20px; 
-}
-
-.convidado-card {
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px; 
-    padding: 20px;
-    width: 600px; 
-    display: flex;
-    flex-direction: column;
-}
-
-.card-header {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-}
-
-.card-content {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.convidado-item {
-    border: 1px solid #eee;
-    padding: 10px;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-}
-
-.convidado-item p {
-    margin: 5px 0;
-}
-
-.acoes-card {
-    display: flex;
-    gap: 5px;
-    margin-top: 10px;
-}
-
-
-.fa-trash, .fa-edit, .fa-whatsapp {
-    cursor: pointer;
-    margin: 0 5px;
-    font-size: 1.2em;
-}
-
-.fa-trash {
-    color: #dc3545;
-}
-
-.fa-edit {
-    color: #007bff;
-}
-
-.fa-whatsapp {
-    color: #25d366;
-}
+  /* no seu arquivo CSS (confirmacao.css) */
+.switch input:checked + .slider {
+    background-color: #4CAF50;
+  }
+  
+  .switch input:checked + .slider:before {
+    transform: translateX(14px);
+  }
+  
