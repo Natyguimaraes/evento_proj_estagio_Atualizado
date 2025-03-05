@@ -10,6 +10,15 @@ function CadastroConvidados() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const validateTelefone = (telefone) => {
+    const re = /^\d{10,11}$/;
+    return re.test(String(telefone));
+  };
+  const validateForm = () => {
+    let formErrors = {};
+    if (!telefone || !validateTelefone(telefone)) formErrors.telefone = "Telefone incorreto"
+  };
+
   const handleCadastro = async () => {
     setError("");
     setSuccess("");
@@ -51,10 +60,10 @@ function CadastroConvidados() {
   };
 
   return (
-    
-      <><div className="cabecalho">
-      <h1>SISTEMA EVENTOS</h1>
-    </div><div className="convidado-container">
+    <>
+      <div className="cabecalho">
+        <h1>SISTEMA EVENTOS</h1>
+      </div><div className="convidado-container">
         <div className="cad-convidado">
           <h2>Cadastro de Convidados</h2>
 
@@ -87,7 +96,7 @@ function CadastroConvidados() {
             onChange={(e) => setAcompanhante(e.target.value)} />
           <input
             className="input-convidado"
-            type="number"
+            type="select"
             placeholder="ID do Evento"
             value={eventoId}
             onChange={(e) => setEventoId(e.target.value)} />

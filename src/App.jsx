@@ -4,9 +4,10 @@ import LoginAdministrador from './frontend/pages/login';
 import CadastroConvidados from './frontend/pages/cadastroConvidado';
 import CadastroEventos from './frontend/pages/cadastroEvento'
 import Confirmacao from './frontend/pages/confirmacao';
-import Dashboard from './frontend/pages/dashboard';
+import Menu from './frontend/pages/menu';
 import CadastroAdministrador from './frontend/pages/cadastro';
 import Eventos from './frontend/pages/eventos';
+
 
 function App() {
     return (
@@ -15,11 +16,12 @@ function App() {
                 <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="/cadastro" element={<CadastroAdministrador />} />
                 <Route path="/login" element={<LoginAdministrador />} />
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/menu" element={<Menu />} />
                 <Route path="/cadastroConvidado" element={<CadastroConvidados />} />
                 <Route path="/cadastroEvento" element={<CadastroEventos />} />
                 <Route path="/confirmacao" element={<Confirmacao />} />
                 <Route path="/eventos" element={<Eventos />} />
+                
             </Routes>
         </Router>
     );

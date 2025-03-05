@@ -9,11 +9,11 @@ function CadastroAdministrador() {
     const navigate = useNavigate();
 
     const validarCPF = (cpf) => {
-        return /^\d{11}$/.test(cpf); // Verifica se o CPF tem 11 dígitos numéricos
+        return /^\d{11}$/.test(cpf); // para verificar se o cpf possui 11 dígitos númericos
     };
 
     const validarSenha = (senha) => {
-        return senha.length >= 8; // Exige no mínimo 6 caracteres
+        return senha.length >= 8; // para exigir que a senha tenha pelo menos 8 dígitos
     };
 
     const handleSubmit = (e) => {
@@ -35,34 +35,35 @@ function CadastroAdministrador() {
             return;
         }
 
-        // Se todas as validações passarem, redireciona para o dashboard
+        // Se todas as validações passarem, redireciona para a página de eventos que estão cadastrados
         navigate("/eventos");
     };
 
     return (
-        <div>
-            <input
-                type="text"
-                placeholder="Nome"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-            />
-            <input
-                type="text"
-                placeholder="CPF"
-                value={cpf}
-                onChange={(e) => setCpf(e.target.value)}
-            />
-            <input
-                type="password"
-                placeholder="Senha"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-            />
-            <button onClick={handleSubmit}>Cadastrar</button>
-
-            {message && <p style={{ color: "red" }}>{message}</p>}
+        <>
+        <div className="cabecalho">
+            <h1>SISTEMA EVENTOS</h1>
         </div>
+        <div>
+                <input
+                    type="text"
+                    placeholder="Nome"
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)} />
+                <input
+                    type="text"
+                    placeholder="CPF"
+                    value={cpf}
+                    onChange={(e) => setCpf(e.target.value)} />
+                <input
+                    type="password"
+                    placeholder="Senha"
+                    value={senha}
+                    onChange={(e) => setSenha(e.target.value)} />
+                <button onClick={handleSubmit}>Cadastrar</button>
+
+                {message && <p style={{ color: "red" }}>{message}</p>}
+            </div></>
     );
 }
 
