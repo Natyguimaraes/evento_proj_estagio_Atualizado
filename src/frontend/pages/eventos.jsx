@@ -59,7 +59,6 @@ function Eventos() {
 
                   return (
                     <>
-
                       <div key={evento.id} className="evento-card">
                         <h3 className="evento-titulo">{evento.nome}</h3>
                         <p className="evento-descricao">{evento.descricao}</p>
@@ -67,7 +66,7 @@ function Eventos() {
                           <strong>Data:</strong> {format(new Date(evento.data_evento), "dd/MM/yyyy HH:mm")}
                         </p>
                         <p className="evento-participantes">
-                          <strong>Total de Convidados e Acompanhantes:</strong> {totalParticipantes}
+                          <strong>Total de Convidados + Acompanhantes:</strong> {totalParticipantes}
                         </p>
                       </div>
                     </>
