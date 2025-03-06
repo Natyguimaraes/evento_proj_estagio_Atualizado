@@ -119,7 +119,6 @@ function CadastroConvidados() {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          {/* Seletor de evento */}
           <select
             className="input-convidado"
             value={eventoId}
@@ -133,7 +132,6 @@ function CadastroConvidados() {
             ))}
           </select>
 
-          {/* Checkbox para perguntar sobre acompanhantes */}
           <label className="checkbox-container">
             <input
               type="checkbox"
@@ -143,7 +141,6 @@ function CadastroConvidados() {
             Deseja informar acompanhantes?
           </label>
 
-          {/* Campos de acompanhantes, aparecem apenas se o checkbox estiver marcado */}
           {desejaInformarCandidato && (
             <div className="acompanhantes-container">
               {acompanhantes.map((acompanhante, index) => (
@@ -177,7 +174,6 @@ function CadastroConvidados() {
               </button>
             </div>
           )}
-
           <button className="button-convidado" onClick={handleCadastro}>
             Cadastrar
           </button>

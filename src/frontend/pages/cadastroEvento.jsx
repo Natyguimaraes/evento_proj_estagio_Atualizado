@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import "../css/eventos.css";
 
@@ -17,7 +16,6 @@ function CadastroEventos() {
             setError("Todos os campos são obrigatórios.");
             return;
         }
-
         try {
             const resposta = await fetch('http://localhost:5000/api/eventos', {
                 method: 'POST',
