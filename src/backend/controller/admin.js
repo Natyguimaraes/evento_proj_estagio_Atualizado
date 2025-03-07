@@ -40,3 +40,4 @@ export async function registerAdmin(req, res) {
     res.status(500).json({ message: "Erro ao cadastrar administrador", error });
   }
 }
+

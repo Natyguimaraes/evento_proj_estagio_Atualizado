@@ -9,16 +9,16 @@ function CadastroConvidados() {
   const [desejaInformarCandidato, setDesejaInformarCandidato] = useState(false);
   const [acompanhantes, setAcompanhantes] = useState([]);
   const [error, setError] = useState("");
-  const [eventos, setEventos] = useState([]); // Para armazenar os eventos
+  const [eventos, setEventos] = useState([]);
 
   useEffect(() => {
-    // Carrega os eventos cadastrados ao montar o componente
+ 
     const carregarEventos = async () => {
       try {
         const resposta = await fetch("http://localhost:5000/api/eventos");
         const dados = await resposta.json();
         if (resposta.ok) {
-          setEventos(dados); // Supondo que a resposta tenha a lista de eventos
+          setEventos(dados); 
         } else {
           setError(dados.erro || "Erro ao carregar eventos.");
         }
@@ -33,7 +33,7 @@ function CadastroConvidados() {
 
   const handleToggleCandidato = () => {
     setDesejaInformarCandidato(!desejaInformarCandidato);
-    setAcompanhantes([]); // Reseta os campos se desmarcar
+    setAcompanhantes([]);
   };
 
   const handleAddAcompanhante = () => {

@@ -1,31 +1,27 @@
-import { create, read, update, deleteConvidado } from "../model/convidado.js";
+import { create, read, update, deleteConvidado, createAcompanhante } from "../model/convidado.js";
 
 export async function createConvidado(req, res) {
-  const { nome, telefone, email, acompanhantes, evento_id } = req.body;
-  console.log("Dados recebidos do frontend:", {
-    nome,
-    telefone,
-    email,
-    acompanhantes,
-    evento_id,
-  });
+  const { nome, telefone, email, acompanhante, evento_id } = req.body;
 
   try {
-    const result = await create(
-      nome,
-      telefone,
-      email,
-      acompanhantes,
-      evento_id
-    );
-    res
-      .status(201)
-      .json({ mensagem: "Convidado adicionado com sucesso", data: result });
+
+    const result = await create(nome, telefone, email, acompanhante, evento_id);
+    const convidadoId = result.insertId;
+
+
+    if (acompanhante.length > 0) {
+      for (const acompanhante of acompanhante) {
+        await createAcompanhante(acompanhante.nome, acompanhante.telefone, acompanhante.email, convidadoId);
+      }
+    }
+
+    res.status(201).json({ mensagem: "Convidado e acompanhantes cadastrados com sucesso" });
   } catch (err) {
     console.error("Erro ao adicionar convidado:", err);
     res.status(500).json({ error: "Erro interno do servidor" });
   }
 }
+
 
 export async function getAllConvidados(req, res) {
   read((err, convidados) => {

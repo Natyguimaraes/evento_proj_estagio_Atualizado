@@ -95,13 +95,10 @@ router.delete("/:id", (req, res) => {
   });
 });
 
-// Nova Rota para Atualizar a Confirmação de Presença
-// A URL deve ser algo como: /api/convidados/1/confirmacao?status=sim
 router.get("/:id/confirmacao", async (req, res) => {
   const { id } = req.params; // Obtém o ID do convidado
   const { status } = req.query; // Obtém o status do parâmetro de consulta
 
-  // Verifica se o status foi fornecido
   if (!status) {
     return res.status(400).json({ erro: "Parâmetro 'status' não fornecido." });
   }

@@ -27,6 +27,20 @@ export function create(nome, telefone, email, acompanhante, evento_id) {
   });
 }
 
+export function createAcompanhante(nome, telefone, email, convidado_id) {
+  return new Promise((resolve, reject) => {
+    conexao.query(
+      "INSERT INTO acompanhante (nome, telefone, email, convidado_id) VALUES (?, ?, ?, ?)",
+      [nome, telefone, email, convidado_id],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(result);
+      }
+    );
+  });
+}
 export function update(id, novoDados, callback) {
   conexao.query(
     "UPDATE convidados SET ? WHERE id = ?",
