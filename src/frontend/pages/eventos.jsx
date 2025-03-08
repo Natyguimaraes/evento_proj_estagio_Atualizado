@@ -54,10 +54,11 @@ function Eventos() {
                 {eventos.map((evento) => {
                   const convidadosEvento = convidados.filter((c) => c.evento_id === evento.id);
                   const totalConvidados = convidadosEvento.length;
-                  const totalAcompanhantes = convidadosEvento.reduce(
-                    (acc, c) => acc + (Number(c.acompanhante) || 0),
-                    0
-                  );
+                  const totalAcompanhantes = convidadosEvento.reduce((acc, c) => {
+                    const acompanhante = parseInt(c.acompanhante, 10);
+                    return acc + (isNaN(acompanhante) ? 0 : acompanhante);
+                  }, 0);
+                  
                   const totalParticipantes = totalConvidados + totalAcompanhantes;
 
                   return (
@@ -70,7 +71,7 @@ function Eventos() {
                       </div>
                       <p className="evento-descricao">{evento.descricao}</p>
                       <p className="evento-participantes">
-                        👥 <strong>{totalParticipantes}</strong> Convidados
+                        👥 <strong>{totalParticipantes}</strong> Participantes (<strong>{totalConvidados}</strong> Convidados + <strong>{totalAcompanhantes}</strong> Acompanhantes)
                       </p>
                       {eventoSelecionado === evento.id && (
                         <div className="evento-opcoes">
