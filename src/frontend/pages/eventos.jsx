@@ -53,12 +53,15 @@ function Eventos() {
               <div className="eventos-grid">
                 {eventos.map((evento) => {
                   const convidadosEvento = convidados.filter((c) => c.evento_id === evento.id);
+
+                  // Conta o total de convidados
                   const totalConvidados = convidadosEvento.length;
+
+                  // Conta o total de acompanhantes (tamanho do array "acompanhantes")
                   const totalAcompanhantes = convidadosEvento.reduce((acc, c) => {
-                    const acompanhante = parseInt(c.acompanhante, 10);
-                    return acc + (isNaN(acompanhante) ? 0 : acompanhante);
+                    return acc + (c.acompanhantes.length || 0); // Soma o tamanho do array de acompanhantes
                   }, 0);
-                  
+
                   const totalParticipantes = totalConvidados + totalAcompanhantes;
 
                   return (
@@ -71,7 +74,9 @@ function Eventos() {
                       </div>
                       <p className="evento-descricao">{evento.descricao}</p>
                       <p className="evento-participantes">
-                        👥 <strong>{totalParticipantes}</strong> Participantes (<strong>{totalConvidados}</strong> Convidados + <strong>{totalAcompanhantes}</strong> Acompanhantes)
+                        👥 <strong>{totalParticipantes}</strong> Participantes (
+                        <strong>{totalConvidados}</strong> Convidados + 
+                        <strong>{totalAcompanhantes}</strong> Acompanhantes)
                       </p>
                       {eventoSelecionado === evento.id && (
                         <div className="evento-opcoes">

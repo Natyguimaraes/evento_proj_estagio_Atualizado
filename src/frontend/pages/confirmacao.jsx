@@ -1,41 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { FaTrash, FaEdit, FaWhatsapp } from "react-icons/fa";
 
-import "../css/confirmacao.css";
-
 function Confirmacao() {
   const [eventos, setEventos] = useState([]);
   const [convidados, setConvidados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editIndex, setEditIndex] = useState(null);
-  const [editData, setEditData] = useState({
-    nome: "",
-    telefone: "",
-    email: "",
-    acompanhante: "",
-  });
+  const [editData, setEditData] = useState({ nome: "", telefone: "", email: "", acompanhante: "" });
 
   useEffect(() => {
     async function fetchDados() {
       setLoading(true);
       try {
-        const eventosResponse = await fetch(
-          "http://localhost:5000/api/eventos"
-        );
-        if (!eventosResponse.ok) throw new Error("Erro ao buscar eventos");
-        const eventosData = await eventosResponse.json();
-        setEventos(eventosData);
-
-        const convidadosResponse = await fetch(
-          "http://localhost:5000/api/convidados"
-        );
-        if (!convidadosResponse.ok)
-          throw new Error("Erro ao buscar convidados");
-        const convidadosData = await convidadosResponse.json();
-        setConvidados(convidadosData);
+        const [eventosRes, convidadosRes] = await Promise.all([
+          fetch("http://localhost:5000/api/eventos"),
+          fetch("http://localhost:5000/api/convidados"),
+        ]);
+        
+        if (!eventosRes.ok || !convidadosRes.ok) throw new Error("Erro ao buscar dados");
+        
+        setEventos(await eventosRes.json());
+        setConvidados(await convidadosRes.json());
       } catch (error) {
-        console.error("Erro ao buscar dados:", error.message);
-        alert(`Erro ao buscar dados: ${error.message}.`);
+        alert(`Erro ao buscar dados: ${error.message}`);
       } finally {
         setLoading(false);
       }
@@ -45,58 +32,32 @@ function Confirmacao() {
 
   const handleEdit = (id) => {
     const convidado = convidados.find((c) => c.id === id);
-    if (!convidado) {
-      console.error("Convidado não encontrado");
-      return;
-    }
+    if (!convidado) return;
     setEditIndex(id);
     setEditData({
       nome: convidado.nome || "",
       telefone: convidado.telefone || "",
       email: convidado.email || "",
-      acompanhante: convidado.acompanhante || 0,
+      acompanhante: convidado.acompanhantes.length || 0,
     });
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEditData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setEditData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleUpdate = async () => {
-    if (!editIndex) {
-      alert("Erro: Nenhum convidado selecionado para edição.");
-      return;
-    }
-
+    if (!editIndex) return;
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/convidados/${editIndex}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(editData),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Erro ao atualizar convidado");
-      }
-      const updatedConvidadosResponse = await fetch(
-        "http://localhost:5000/api/convidados"
-      );
-      const updatedConvidados = await updatedConvidadosResponse.json();
-      setConvidados(updatedConvidados);
-
+      await fetch(`http://localhost:5000/api/convidados/${editIndex}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editData),
+      });
+      setConvidados((prev) => prev.map((c) => (c.id === editIndex ? { ...c, ...editData } : c)));
       setEditIndex(null);
       alert("Convidado atualizado com sucesso!");
     } catch (error) {
-      console.error("Erro ao atualizar convidado:", error);
       alert(`Erro ao atualizar convidado: ${error.message}`);
     }
   };
@@ -104,39 +65,20 @@ function Confirmacao() {
   const handleDelete = async (id) => {
     if (window.confirm("Tem certeza que deseja excluir este convidado?")) {
       try {
-        const response = await fetch(
-          `http://localhost:5000/api/convidados/${id}`,
-          { method: "DELETE" }
-        );
-        if (!response.ok) throw new Error("Erro ao excluir convidado");
+        await fetch(`http://localhost:5000/api/convidados/${id}`, { method: "DELETE" });
         setConvidados((prev) => prev.filter((c) => c.id !== id));
         alert("Convidado excluído com sucesso!");
       } catch (error) {
-        console.error("Erro ao excluir convidado:", error.message);
-        alert(`Erro ao excluir convidado: ${error.message}.`);
+        alert(`Erro ao excluir convidado: ${error.message}`);
       }
     }
   };
 
   const enviarWhatsapp = (telefone, nome, evento_id, id) => {
-    const nomeEvento = eventos.find((e) => e.id === evento_id)?.nome || "Evento";
-    const linkConfirmacaoSim = `http://localhost:5000/api/convidados/${id}/confirmacao?status=sim`;
-    const linkConfirmacaoNao = `http://localhost:5000/api/convidados/${id}/confirmacao?status=nao`;
-
-  
-    const mensagem = `Olá ${nome}! Você está convidado para o evento *"${nomeEvento}"*!
-  
-  Por favor, confirme sua presença:
-  
-  *Vou participar:* [Clique aqui](${linkConfirmacaoSim})
-  
-  *Não vou* [Clique aqui](${linkConfirmacaoNao})
-  
-  Esperamos por você!`;
-  
-    window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`, "_blank");
+    const evento = eventos.find((e) => e.id === evento_id)?.nome || "Evento";
+    const msg = `Olá ${nome}, você está convidado para *${evento}*!\nConfirme sua presença:\n✔️ Sim: http://localhost:5000/api/convidados/${id}/confirmacao?status=sim\n❌ Não: http://localhost:5000/api/convidados/${id}/confirmacao?status=nao`;
+    window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(msg)}`, "_blank");
   };
-  
 
   return (
     <div className="confirmacao-container">
@@ -145,85 +87,41 @@ function Confirmacao() {
         <p>Carregando...</p>
       ) : (
         eventos.map((evento) => {
-          const convidadosEvento = convidados.filter(
-            (c) => c.evento_id === evento.id
-          );
-          const totalConvidados = convidadosEvento.length;
-          const totalAcompanhantes = convidadosEvento.reduce(
-            (acc, c) => acc + (Number(c.acompanhante) || 0),
-            0
-          );
-          const totalParticipantes = totalConvidados + totalAcompanhantes;
-
-          const confirmados = convidadosEvento.filter(
-            (c) => c.confirmado
-          ).length;
-          const pendentes = convidadosEvento.filter(
-            (c) => c.confirmado === false
-          ).length;
-
+          const convidadosEvento = convidados.filter((c) => c.evento_id === evento.id);
+          const totalParticipantes = convidadosEvento.reduce((acc, convidado) => acc + 1 + convidado.acompanhantes.length, 0);
           return (
-            <div className="convidado-card" key={evento.id}>
+            <div className="evento-card" key={evento.id}>
               <h3>{evento.nome}</h3>
-              <p>Total de Convidados e acompanhantes: {totalParticipantes}</p>
-              <p>Confirmados: {confirmados}</p>
-              <p>Pendentes: {pendentes}</p>
-              <div className="card-content">
+              <p>Total Participantes: {totalParticipantes}</p>
+              <div className="convidados-lista">
                 {convidadosEvento.map((convidado) => (
                   <div key={convidado.id} className="convidado-item">
                     {editIndex === convidado.id ? (
                       <div className="edit-form">
-                        <input
-                          type="text"
-                          name="nome"
-                          value={editData.nome}
-                          onChange={handleChange}
-                        />
-                        <input
-                          type="text"
-                          name="telefone"
-                          value={editData.telefone}
-                          onChange={handleChange}
-                        />
-                        <input
-                          type="email"
-                          name="email"
-                          value={editData.email}
-                          onChange={handleChange}
-                        />
-                        <input
-                          type="number"
-                          name="acompanhante"
-                          value={editData.acompanhante}
-                          onChange={handleChange}
-                        />
+                        <input type="text" name="nome" value={editData.nome} onChange={handleChange} />
+                        <input type="text" name="telefone" value={editData.telefone} onChange={handleChange} />
+                        <input type="email" name="email" value={editData.email} onChange={handleChange} />
+                        <input type="number" name="acompanhante" value={editData.acompanhante} onChange={handleChange} />
                         <button onClick={handleUpdate}>Salvar</button>
-                        <button onClick={() => setEditIndex(null)}>
-                          Cancelar
-                        </button>
+                        <button onClick={() => setEditIndex(null)}>Cancelar</button>
                       </div>
                     ) : (
                       <>
-                        <p>
-                          <strong>Nome:</strong> {convidado.nome}
+                        <p><strong>Nome:</strong> {convidado.nome}</p>
+                        <p><strong>Confirmado:</strong> {convidado.confirmado ? "Sim" : "Não"}</p>
+                        <p><strong>Acompanhante(s):</strong> 
+                          {convidado.acompanhantes.length > 0 ? (
+                            convidado.acompanhantes.map((acompanhante, index) => (
+                              <span key={index}>{acompanhante.nome} ({acompanhante.telefone})</span>
+                            ))
+                          ) : (
+                            "Nenhum"
+                          )}
                         </p>
-                        <p>
-                          <strong>Confirmado:</strong>{" "}
-                          {convidado.confirmado ? "Sim" : "Não"}
-                        </p>
-                        <div className="acoes-card">
+                        <div className="acoes">
                           <FaEdit onClick={() => handleEdit(convidado.id)} />
                           <FaTrash onClick={() => handleDelete(convidado.id)} />
-                          <FaWhatsapp
-                            onClick={() =>
-                              enviarWhatsapp(
-                                convidado.telefone,
-                                convidado.nome,
-                                evento.id,
-                                convidado.id
-                              )
-                            }
-                          />
+                          <FaWhatsapp onClick={() => enviarWhatsapp(convidado.telefone, convidado.nome, evento.id, convidado.id)} />
                         </div>
                       </>
                     )}

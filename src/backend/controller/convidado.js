@@ -1,4 +1,4 @@
-import { create, read, update, deleteConvidado, createAcompanhante } from "../model/convidado.js";
+import { create, getAcompanhantesByConvidadoId, read, update, deleteConvidado, createAcompanhante } from "../model/convidado.js";
 
 export async function createConvidado(req, res) {
   const { nome, telefone, email, acompanhantes, evento_id } = req.body;
@@ -23,11 +23,19 @@ export async function createConvidado(req, res) {
 export async function getAllConvidados(req, res) {
   try {
     const convidados = await read();
+
+    // Buscar acompanhantes para cada convidado e adicionar ao convidado
+    for (const convidado of convidados) {
+      const acompanhantes = await getAcompanhantesByConvidadoId(convidado.id);
+      convidado.acompanhantes = acompanhantes; // Armazenar acompanhantes completos
+    }
+
     res.json(convidados);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 }
+
 
 export async function updateConvidado(req, res) {
   const { id } = req.params;

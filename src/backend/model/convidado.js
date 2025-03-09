@@ -9,6 +9,7 @@ export function read() {
   });
 }
 
+
 export function create(nome, telefone, email, evento_id) {
   return new Promise((resolve, reject) => {
     conexao.query(
@@ -53,3 +54,11 @@ export function deleteConvidado(id) {
   });
 }
 
+export function getAcompanhantesByConvidadoId(convidado_id) {
+  return new Promise((resolve, reject) => {
+    conexao.query("SELECT * FROM acompanhante WHERE convidado_id = ?", [convidado_id], (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+}
