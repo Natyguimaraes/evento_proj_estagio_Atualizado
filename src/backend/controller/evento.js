@@ -16,14 +16,14 @@ export async function getAllEventos(req, res) {
 }
 
 export async function createEventoController(req, res) {
-  const { nome, descricao, data_evento } = req.body;
+  const {imagem_evento, nome, descricao, data_evento, local} = req.body;
 
-  if (!nome || !descricao || !data_evento) {
+  if (!imagem_evento || !nome || !descricao || !data_evento || !local) {
     return res.status(400).json({ error: "Todos os campos são obrigatórios." });
   }
 
   try {
-    const result = await createEvento(nome, descricao, data_evento);
+    const result = await createEvento(imagem_evento, nome, descricao, data_evento, local);
     res
       .status(201)
       .json({ mensagem: "Evento cadastrado com sucesso", data: result });

@@ -94,9 +94,7 @@ function CadastroConvidados() {
       <div className="convidado-container">
         <div className="cad-convidado">
           <h2>Cadastro de Convidados</h2>
-
           {error && <p className="error-message">{error}</p>}
-
           <input
             className="input-convidado"
             type="text"
@@ -118,7 +116,6 @@ function CadastroConvidados() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-
           <select
             className="input-convidado"
             value={eventoId}

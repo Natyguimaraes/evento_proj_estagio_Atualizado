@@ -57,7 +57,7 @@ function Eventos() {
                   // Conta o total de convidados
                   const totalConvidados = convidadosEvento.length;
 
-                  // Conta o total de acompanhantes (tamanho do array "acompanhantes")
+                  // Conta o total de acompanhantes
                   const totalAcompanhantes = convidadosEvento.reduce((acc, c) => {
                     return acc + (c.acompanhantes.length || 0); // Soma o tamanho do array de acompanhantes
                   }, 0);
@@ -74,9 +74,7 @@ function Eventos() {
                       </div>
                       <p className="evento-descricao">{evento.descricao}</p>
                       <p className="evento-participantes">
-                        👥 <strong>{totalParticipantes}</strong> Participantes (
-                        <strong>{totalConvidados}</strong> Convidados + 
-                        <strong>{totalAcompanhantes}</strong> Acompanhantes)
+                        👥 <strong>{totalParticipantes}</strong> Participantes
                       </p>
                       {eventoSelecionado === evento.id && (
                         <div className="evento-opcoes">

@@ -28,7 +28,7 @@
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
-    background: -webkit-linear-gradient(45deg, #ff8c00, #ff0055);
+    background: white;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -80,7 +80,7 @@
     transform: scale(1.05);
   }
   
-  /* Fundo escuro ao abrir o menu */
+
 .menu-overlay {
     position: fixed;
     top: 0;
@@ -91,7 +91,7 @@
     z-index: 10;
   }
   
-  /* Ajustando o menu para garantir que ele esteja acima do fundo */
+ 
   .menu-lateral {
     position: fixed;
     top: 0;

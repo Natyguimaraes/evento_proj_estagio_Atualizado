@@ -2,9 +2,11 @@ import { useState } from 'react';
 import "../css/eventos.css";
 
 function CadastroEventos() {
+    const [imagem_evento, setImagemEvento] = useState('');
     const [nome, setNome] = useState('');
     const [descricao, setDescricao] = useState('');
     const [dataEvento, setDataEvento] = useState('');
+    const [local, setLocal] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState(''); 
 
@@ -20,16 +22,18 @@ function CadastroEventos() {
             const resposta = await fetch('http://localhost:5000/api/eventos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nome, descricao, data_evento: dataEvento }),
+                body: JSON.stringify({ imagem_evento, nome, descricao, data_evento: dataEvento, local }),
             });
 
             const dados = await resposta.json();
 
             if (resposta.ok) {
                 alert('Evento cadastrado com sucesso!');
+                setImagemEvento('');
                 setNome('');
                 setDescricao('');
                 setDataEvento('');
+                setLocal('')
             } else {
                 alert(dados.erro || 'Erro ao cadastrar evento.');
             }
@@ -50,7 +54,13 @@ function CadastroEventos() {
 
                     {error && <p className="error-message">{error}</p>}
                     {success && <p className="success-message">{success}</p>}
-
+                    <input 
+                    className="input-cad-evento"
+                    type="file"
+                    accept="image/*"
+                    placeholder="Imagem do evento"
+                    value={imagem_evento}    
+                    onChange={e => setImagemEvento(e.target.value)}  />
                     <input
                         className="input-cad-evento"
                         type="text"
@@ -67,6 +77,14 @@ function CadastroEventos() {
                         type="datetime-local"
                         value={dataEvento}
                         onChange={e => setDataEvento(e.target.value)} />
+
+                        <input
+                        className="input-cad-evento"
+                        placeholder="Local"
+                        type="text"
+                        value={local}
+                        onChange={e => setLocal(e.target.value)} />
+
                     <button className="button-evento" onClick={handleCadastro}>
                         Cadastrar
                     </button>

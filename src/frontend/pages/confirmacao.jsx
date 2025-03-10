@@ -62,23 +62,29 @@ function Confirmacao() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Tem certeza que deseja excluir este convidado?")) {
-      try {
-        await fetch(`http://localhost:5000/api/convidados/${id}`, { method: "DELETE" });
-        setConvidados((prev) => prev.filter((c) => c.id !== id));
-        alert("Convidado excluído com sucesso!");
-      } catch (error) {
-        alert(`Erro ao excluir convidado: ${error.message}`);
-      }
-    }
-  };
+
 
   const enviarWhatsapp = (telefone, nome, evento_id, id) => {
     const evento = eventos.find((e) => e.id === evento_id)?.nome || "Evento";
-    const msg = `Olá ${nome}, você está convidado para *${evento}*!\nConfirme sua presença:\n✔️ Sim: http://localhost:5000/api/convidados/${id}/confirmacao?status=sim\n❌ Não: http://localhost:5000/api/convidados/${id}/confirmacao?status=nao`;
+    const msg = `Olá ${nome}, você está convidado para *${evento}*!\nConfirme sua presença:\n Sim: http://localhost:5000/api/convidados/${id}/confirmacao?status=sim\n Não: http://localhost:5000/api/convidados/${id}/confirmacao?status=nao`;
     window.open(`https://wa.me/${telefone}?text=${encodeURIComponent(msg)}`, "_blank");
   };
+
+  const handleDeleteEvento = async (id) => {
+    if (window.confirm("Tem certeza que deseja excluir esse evento?")) {
+      try {
+        await fetch(`http://localhost:5000/api/eventos/${id}`, { method: "DELETE" });
+  
+        // Remove o evento do estado corretamente
+        setEventos((prev) => prev.filter((evento) => evento.id !== id));
+  
+        alert("Evento excluído com sucesso!");
+      } catch (error) {
+        alert(`Erro ao excluir evento: ${error.message}`);
+      }
+    }
+  };
+  
 
   return (
     <div className="confirmacao-container">
@@ -101,7 +107,6 @@ function Confirmacao() {
                         <input type="text" name="nome" value={editData.nome} onChange={handleChange} />
                         <input type="text" name="telefone" value={editData.telefone} onChange={handleChange} />
                         <input type="email" name="email" value={editData.email} onChange={handleChange} />
-                        <input type="number" name="acompanhante" value={editData.acompanhante} onChange={handleChange} />
                         <button onClick={handleUpdate}>Salvar</button>
                         <button onClick={() => setEditIndex(null)}>Cancelar</button>
                       </div>
@@ -128,10 +133,12 @@ function Confirmacao() {
                   </div>
                 ))}
               </div>
+              <FaTrash onClick={() => handleDeleteEvento(evento.id)} />
             </div>
           );
         })
       )}
+     
     </div>
   );
 }

@@ -11,10 +11,10 @@ const conexao = mysql.createConnection({
   user: process.env.DB_USER || "root",
 
   // eslint-disable-next-line no-undef
-  password: process.env.DB_PASSWORD || "123456789",
+  password: process.env.DB_PASSWORD || "",
 
   // eslint-disable-next-line no-undef
-  database: process.env.DB_NAME || "sistema_eventos",
+  database: process.env.DB_NAME || "teste",
 });
 conexao.connect((err) => {
   if (err) {
