@@ -7,7 +7,7 @@ import Confirmacao from './frontend/pages/confirmacao';
 import Menu from './frontend/pages/menu';
 import CadastroAdministrador from './frontend/pages/cadastro';
 import Eventos from './frontend/pages/eventos';
-
+import ButtonConf from './frontend/pages/button_conf';
 
 function App() {
     return (
@@ -21,7 +21,7 @@ function App() {
                 <Route path="/cadastroEvento" element={<CadastroEventos />} />
                 <Route path="/confirmacao" element={<Confirmacao />} />
                 <Route path="/eventos" element={<Eventos />} />
-                
+                <Route path="/confirmacao/:convidadoId" element={<ButtonConf />} />
             </Routes>
         </Router>
     );
