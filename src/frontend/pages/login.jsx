@@ -35,12 +35,9 @@ function LoginAdministrador() {
   };
 
   return (
-    <>
-      <div className="cabecalho">
-        <h1>SISTEMA EVENTOS</h1>
-      </div>
-      <div className="container">
-        <h2>Login de Administrador</h2>
+    <div className="login-admin-container">
+      <div className="login-admin-form-box">
+        <h1>Login de Administrador</h1>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
@@ -48,6 +45,7 @@ function LoginAdministrador() {
             value={cpf}
             onChange={(e) => setCpf(e.target.value)}
             required
+            className="login-admin-input"
           />
           <input
             type="password"
@@ -55,19 +53,16 @@ function LoginAdministrador() {
             value={senha}
             onChange={(e) => setSenha(e.target.value)}
             required
+            className="login-admin-input"
           />
-          <button className="login-button" type="submit">
+          <button className="login-admin-button" type="submit">
             Entrar
           </button>
         </form>
-        {message && <p>{message}</p>}
-        
-        {/* Botão para ir para a tela de Cadastro de Administrador */}
-        <button className="login-button" onClick={() => navigate("/cadastro")}>
-          Ainda não tem conta? Cadastre-se
-        </button>
+        {message && <p className="login-admin-error-message">{message}</p>}
+        <button className="login-admin-button" onClick={() => navigate("/cadastro")}>Ainda não tem conta? Cadastre-se</button>
       </div>
-    </>
+    </div>
   );
 }
 

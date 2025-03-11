@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaTrash, FaEdit, FaWhatsapp, FaPlus } from "react-icons/fa";
+import "../css/lista.css";
 
 function Confirmacao() {
   const [eventos, setEventos] = useState([]);
@@ -106,18 +107,16 @@ function Confirmacao() {
   };
 
   const handleSendWhatsapp = async (convidado) => {
-    // Defina a URL correta para a página de confirmação no frontend
     const linkConfirmacao = `http://localhost:5173/confirmacao/${convidado.id}`;
     const mensagem = `Olá ${convidado.nome}, confirme sua presença no evento acessando este link: ${linkConfirmacao}`;
     const linkWhatsapp = `https://api.whatsapp.com/send?phone=55${convidado.telefone}&text=${encodeURIComponent(mensagem)}`;
 
-    // Atualiza automaticamente no banco de dados
     try {
       const resposta = await fetch(`http://localhost:5000/api/convidados/${convidado.id}/confirmar`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
       });
-  
+
       if (resposta.ok) {
         setConvidados((prev) =>
           prev.map((c) =>
@@ -131,13 +130,10 @@ function Confirmacao() {
     } catch (error) {
       alert("Erro ao enviar a mensagem.");
     }
-  
-    // Abre o link do WhatsApp em uma nova aba
-    window.open(linkWhatsapp, "_blank");
-};
 
-  
-  
+    window.open(linkWhatsapp, "_blank");
+  };
+
   return (
     <div className="confirmacao-container">
       <h1>Lista de Convidados por Evento</h1>
@@ -150,68 +146,105 @@ function Confirmacao() {
             <div className="evento-card" key={evento.id}>
               <h3>{evento.nome}</h3>
               <p>Total Convidados: {convidadosEvento.length}</p>
-              <div className="convidados-lista">
-                {convidadosEvento.map((convidado) => (
-                  <div key={convidado.id} className="convidado-item">
-                    {editIndex === convidado.id ? (
-                      <div className="edit-form">
-                        <input type="text" name="nome" value={editData.nome} onChange={(e) => setEditData({ ...editData, nome: e.target.value })} />
-                        <input type="text" name="telefone" value={editData.telefone} onChange={(e) => setEditData({ ...editData, telefone: e.target.value })} />
-                        <input type="email" name="email" value={editData.email} onChange={(e) => setEditData({ ...editData, email: e.target.value })} />
-
-                        <h4>Acompanhantes:</h4>
-                        {editData.acompanhantes.map((acompanhante, index) => (
-                          <div key={index} className="acompanhante-edit">
+              <table className="tabela-convidados">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>Telefone</th>
+                    <th>Email</th>
+                    <th>Confirmado</th>
+                    <th>Acompanhantes</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {convidadosEvento.map((convidado) => (
+                    <tr key={convidado.id}>
+                      {editIndex === convidado.id ? (
+                        <>
+                          <td>
                             <input
                               type="text"
-                              value={acompanhante.nome}
-                              onChange={(e) => handleAcompanhanteChange(index, "nome", e.target.value)}
-                              placeholder="Nome do acompanhante"
+                              name="nome"
+                              value={editData.nome}
+                              onChange={(e) => setEditData({ ...editData, nome: e.target.value })}
                             />
+                          </td>
+                          <td>
                             <input
                               type="text"
-                              value={acompanhante.telefone}
-                              onChange={(e) => handleAcompanhanteChange(index, "telefone", e.target.value)}
-                              placeholder="Telefone do acompanhante"
+                              name="telefone"
+                              value={editData.telefone}
+                              onChange={(e) => setEditData({ ...editData, telefone: e.target.value })}
                             />
-                            <FaTrash onClick={() => handleDeleteAcompanhante(index)} />
-                          </div>
-                        ))}
-
-                        <button onClick={handleAddAcompanhante}>
-                          <FaPlus /> Adicionar Acompanhante
-                        </button>
-
-                        <button onClick={handleUpdate}>Salvar</button>
-                        <button onClick={() => setEditIndex(null)}>Cancelar</button>
-                      </div>
-                    ) : (
-                      <>
-                        <p><strong>Nome:</strong> {convidado.nome}</p>
-                        <p><strong>Telefone:</strong> {convidado.telefone}</p>
-                        <p><strong>Confirmado:</strong> {convidado.confirmado ? "Sim" : "Não"}</p>
-                        <p><strong>Acompanhantes:</strong></p>
-                        {convidado.acompanhantes.length > 0 ? (
-                          <ul>
-                            {convidado.acompanhantes.map((acompanhante, index) => (
-                              <li key={index}>
-                                {acompanhante.nome} ({acompanhante.telefone})
-                              </li>
+                          </td>
+                          <td>
+                            <input
+                              type="email"
+                              name="email"
+                              value={editData.email}
+                              onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+                            />
+                          </td>
+                          <td>
+                            {editData.acompanhantes.map((acompanhante, index) => (
+                              <div key={index} className="acompanhante-edit">
+                                <input
+                                  type="text"
+                                  value={acompanhante.nome}
+                                  onChange={(e) => handleAcompanhanteChange(index, "nome", e.target.value)}
+                                  placeholder="Nome do acompanhante"
+                                />
+                                <input
+                                  type="text"
+                                  value={acompanhante.telefone}
+                                  onChange={(e) => handleAcompanhanteChange(index, "telefone", e.target.value)}
+                                  placeholder="Telefone do acompanhante"
+                                />
+                                <FaTrash onClick={() => handleDeleteAcompanhante(index)} />
+                              </div>
                             ))}
-                          </ul>
-                        ) : (
-                          <p>Nenhum acompanhante</p>
-                        )}
-                        <div className="acoes">
-                          <FaEdit onClick={() => handleEdit(convidado.id)} />
-                          <FaTrash onClick={() => handleDeleteConvidado(convidado.id)} />
-                          <FaWhatsapp onClick={() => handleSendWhatsapp(convidado)} style={{ cursor: "pointer", color: "green" }} />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                ))}
-              </div>
+                            <button onClick={handleAddAcompanhante}>
+                              <FaPlus /> Adicionar Acompanhante
+                            </button>
+                          </td>
+                          <td>
+                            <button onClick={handleUpdate}>Salvar</button>
+                            <button onClick={() => setEditIndex(null)}>Cancelar</button>
+                          </td>
+                        </>
+                      ) : (
+                        <>
+                          <td>{convidado.nome}</td>
+                          <td>{convidado.telefone}</td>
+                          <td>{convidado.email}</td>
+                          <td>{convidado.confirmado ? "Sim" : "Não"}</td>
+                          <td>
+                            {convidado.acompanhantes.length > 0 ? (
+                              <ul>
+                                {convidado.acompanhantes.map((acompanhante, index) => (
+                                  <li key={index}>
+                                    {acompanhante.nome} ({acompanhante.telefone})
+                                  </li>
+                                ))}
+                              </ul>
+                            ) : (
+                              <p>Nenhum acompanhante</p>
+                            )}
+                          </td>
+                          <td>
+                            <div className="acoes">
+                              <FaEdit onClick={() => handleEdit(convidado.id)} />
+                              <FaTrash onClick={() => handleDeleteConvidado(convidado.id)} />
+                              <FaWhatsapp onClick={() => handleSendWhatsapp(convidado)} />
+                            </div>
+                          </td>
+                        </>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           );
         })
@@ -221,3 +254,4 @@ function Confirmacao() {
 }
 
 export default Confirmacao;
+

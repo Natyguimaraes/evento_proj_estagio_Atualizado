@@ -1,5 +1,6 @@
-/* LoginAdministrador.css */
-.login-admin-container {
+
+/* CadastroAdministrador.css */
+.cadastro-admin-container {
     font-family: "Poppins", sans-serif;
     background: linear-gradient(135deg, #6e8efb, #a777e3);
     display: flex;
@@ -9,7 +10,7 @@
     width: 100%;
 }
 
-.login-admin-form-box {
+.cadastro-admin-form-box {
     background: white;
     padding: 30px;
     border-radius: 15px;
@@ -37,7 +38,7 @@ h1 {
     font-size: 24px;
 }
 
-.login-admin-input {
+.cadastro-admin-input {
     width: 100%;
     padding: 12px;
     margin: 10px 0;
@@ -48,12 +49,12 @@ h1 {
     transition: 0.3s ease-in-out;
 }
 
-.login-admin-input:focus {
+.cadastro-admin-input:focus {
     outline: none;
     background: #e0e0e0;
 }
 
-.login-admin-button {
+.cadastro-admin-button {
     width: 100%;
     padding: 12px;
     background: #6e8efb;
@@ -67,13 +68,12 @@ h1 {
     margin-top: 10px;
 }
 
-.login-admin-button:hover {
-    background: #5a75e5;
+.cadastro-admin-button:hover {
+    background: #e04e68;
 }
 
-.login-admin-error-message {
+.cadastro-admin-error-message {
     color: red;
     margin-top: 10px;
     font-size: 14px;
 }
-
