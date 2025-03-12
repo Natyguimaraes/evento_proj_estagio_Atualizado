@@ -63,6 +63,7 @@ function CadastroAdministrador() {
                     <button type="submit" className="cadastro-admin-button">Cadastrar</button>
                     {message && <p className="cadastro-admin-error-message">{message}</p>}
                 </form>
+                <button className="cad-admin-button" onclick={() => navigate("/login")}> Já possuo cadastro! </button>
             </div>
         </div>
     );

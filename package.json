@@ -9,7 +9,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "tailwind:init": "tailwindcss init",
-  "build:css": "postcss src/styles.css -o dist/styles.css"
+    "build:css": "postcss src/styles.css -o dist/styles.css"
   },
   "dependencies": {
     "@fullcalendar/daygrid": "^6.1.15",
