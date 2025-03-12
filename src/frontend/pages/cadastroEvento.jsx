@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import "../css/eventos.css";
+import "../../index.css";
 
 function CadastroEventos() {
     const [imagem_evento, setImagemEvento] = useState('');

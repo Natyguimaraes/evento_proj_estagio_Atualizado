@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "../css/convidado.css";
+import "../../index.css";
 
 function CadastroConvidados() {
   const [nome, setNome] = useState("");

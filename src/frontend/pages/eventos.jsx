@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
-import "../css/confirmacao.css";
+import "../../index.css";
 import Menu from "./menu";
 import Rodape from "./rodape";
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";  // Usar o React Router para pegar o parâmetro da URL
-
+import { useParams } from "react-router-dom";  
+import "../../index.css";
 
 function ButtonConf() {
   const { convidadoId } = useParams();  // Pega o id do convidado na URL

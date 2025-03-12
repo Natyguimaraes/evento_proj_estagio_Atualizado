@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaTrash, FaEdit, FaWhatsapp, FaPlus } from "react-icons/fa";
-import "../css/lista.css";
+import "../../index.css";
 
 function Confirmacao() {
   const [eventos, setEventos] = useState([]);
