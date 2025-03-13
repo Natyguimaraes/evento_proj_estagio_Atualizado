@@ -110,7 +110,7 @@ function LoginAdministrador() {
         
         <div className="mt-8">
           <button 
-            onClick={() => navigate("/cadastro")} 
+            onClick={() => navigate("/cadastroAdm")} 
             className="w-full py-3 rounded-xl text-[#8470A1] bg-white/50 border border-[#CCCAC4] hover:bg-[#8470A1]/5 transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]"
           >
             Ainda não tem conta? Cadastre-se

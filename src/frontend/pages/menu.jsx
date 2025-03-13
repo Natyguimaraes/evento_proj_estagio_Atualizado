@@ -25,7 +25,7 @@ function Menu() {
   const closeMenu = () => setIsMenuOpen(false);
 
   const menuItems = [
-    { to: "/cadastroEvento", label: "Eventos", icon: <Calendar className="mr-3 h-5 w-5 text-yellow-500" /> },
+    { to: "/cadastroEvento", label: "Cadastrar evento", icon: <Calendar className="mr-3 h-5 w-5 text-yellow-500" /> },
     { to: "/cadastroConvidado", label: "Cadastrar Convidado", icon: <UserPlus className="mr-3 h-5 w-5 text-red-500" /> },
     { to: "/confirmacao", label: "Lista de convidados", icon: <List className="mr-3 h-5 w-5 text-gray-500" /> },
   ];

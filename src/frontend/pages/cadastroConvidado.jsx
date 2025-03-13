@@ -134,7 +134,7 @@ function CadastroConvidados() {
     <div className="min-h-screen bg-gradient-to-b from-event-background to-event-accent/10">
       <div className="max-w-4xl mx-auto p-6">
         <button 
-          onClick={() => navigate('/')}
+          onClick={() => navigate(-1)}
           className="flex items-center text-event-text-secondary mb-6 hover:text-event-text-accent transition-colors"
         >
           <ChevronLeft size={20} />

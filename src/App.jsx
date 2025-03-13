@@ -5,7 +5,7 @@ import CadastroConvidados from './frontend/pages/cadastroConvidado';
 import CadastroEventos from './frontend/pages/cadastroEvento'
 import Confirmacao from './frontend/pages/confirmacao';
 import Menu from './frontend/pages/menu';
-import CadastroAdministrador from './frontend/pages/cadastro';
+import CadastroAdministrador from './frontend/pages/cadastroAdm';
 import Eventos from './frontend/pages/eventos';
 import ButtonConf from './frontend/pages/button_conf';
 
@@ -14,7 +14,7 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/" element={<Navigate to="/login" />} />
-                <Route path="/cadastro" element={<CadastroAdministrador />} />
+                <Route path="/cadastroAdm" element={<CadastroAdministrador />} />
                 <Route path="/login" element={<LoginAdministrador />} />
                 <Route path="/menu" element={<Menu />} />
                 <Route path="/cadastroConvidado" element={<CadastroConvidados />} />

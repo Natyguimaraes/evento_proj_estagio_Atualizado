@@ -62,7 +62,7 @@ function CadastroEventos() {
         <div className="min-h-screen bg-gradient-to-b from-event-background to-event-accent/10 py-12 px-4 sm:px-6 lg:px-8 page-transition">
             <div className="max-w-3xl mx-auto">
                 <button 
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate(-1)}
                     className="mb-6 flex items-center text-event-text-secondary hover:text-event-primary transition-colors"
                 >
                     <ArrowLeft className="h-4 w-4 mr-2" />

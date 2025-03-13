@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Check, Trash2, Edit, Send, Plus, X, ChevronLeft, Loader2, Users, CalendarIcon } from "lucide-react";
+import { Check, Trash2, Edit, Send, Plus, ChevronLeft, Loader2, Users, CalendarIcon } from "lucide-react";
 import { toast } from "sonner"; // Importando diretamente do sonner
 
 function Confirmacao() {
@@ -50,39 +50,6 @@ function Confirmacao() {
     });
   };
 
-  const handleDeleteConvidado = async (id) => {
-    try {
-      toast({
-        title: "Confirmação",
-        description: "Tem certeza que deseja remover este convidado?",
-        action: (
-          <div className="flex gap-3 mt-2">
-            <button 
-              onClick={async () => {
-                try {
-                  await fetch(`http://localhost:5000/api/convidados/${id}`, {
-                    method: "DELETE",
-                  });
-                  setConvidados((prev) => prev.filter((c) => c.id !== id));
-                  toast.success("Convidado removido com sucesso!");
-                } catch (error) {
-                  toast.error(`Erro ao excluir convidado: ${error.message}`);
-                }
-              }}
-              className="bg-event-primary text-white px-3 py-1 rounded-full text-xs"
-            >
-              Confirmar
-            </button>
-            <button className="bg-gray-200 px-3 py-1 rounded-full text-xs">
-              Cancelar
-            </button>
-          </div>
-        ),
-      });
-    } catch (error) {
-      toast.error(`Erro ao excluir convidado: ${error.message}`);
-    }
-  };
 
   const handleUpdate = async () => {
     if (!editIndex) return;
