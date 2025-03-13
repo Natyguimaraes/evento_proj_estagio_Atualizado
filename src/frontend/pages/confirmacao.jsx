@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { FaTrash, FaEdit, FaWhatsapp, FaPlus } from "react-icons/fa";
-import "../../index.css";
+import { useNavigate } from "react-router-dom";
+import { Check, Trash2, Edit, Send, Plus, X, ChevronLeft, Loader2, Users, CalendarIcon } from "lucide-react";
+import { toast } from "sonner"; // Importando diretamente do sonner
 
 function Confirmacao() {
+  const navigate = useNavigate();
   const [eventos, setEventos] = useState([]);
   const [convidados, setConvidados] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +30,7 @@ function Confirmacao() {
         setEventos(await eventosRes.json());
         setConvidados(await convidadosRes.json());
       } catch (error) {
-        alert(`Erro ao buscar dados: ${error.message}`);
+        toast.error(`Erro ao buscar dados: ${error.message}`);
       } finally {
         setLoading(false);
       }
@@ -49,17 +51,36 @@ function Confirmacao() {
   };
 
   const handleDeleteConvidado = async (id) => {
-    if (!window.confirm("Tem certeza que deseja remover este convidado?")) return;
-
     try {
-      await fetch(`http://localhost:5000/api/convidados/${id}`, {
-        method: "DELETE",
+      toast({
+        title: "Confirmação",
+        description: "Tem certeza que deseja remover este convidado?",
+        action: (
+          <div className="flex gap-3 mt-2">
+            <button 
+              onClick={async () => {
+                try {
+                  await fetch(`http://localhost:5000/api/convidados/${id}`, {
+                    method: "DELETE",
+                  });
+                  setConvidados((prev) => prev.filter((c) => c.id !== id));
+                  toast.success("Convidado removido com sucesso!");
+                } catch (error) {
+                  toast.error(`Erro ao excluir convidado: ${error.message}`);
+                }
+              }}
+              className="bg-event-primary text-white px-3 py-1 rounded-full text-xs"
+            >
+              Confirmar
+            </button>
+            <button className="bg-gray-200 px-3 py-1 rounded-full text-xs">
+              Cancelar
+            </button>
+          </div>
+        ),
       });
-
-      setConvidados((prev) => prev.filter((c) => c.id !== id));
-      alert("Convidado removido com sucesso!");
     } catch (error) {
-      alert(`Erro ao excluir convidado: ${error.message}`);
+      toast.error(`Erro ao excluir convidado: ${error.message}`);
     }
   };
 
@@ -76,9 +97,9 @@ function Confirmacao() {
         prev.map((c) => (c.id === editIndex ? { ...c, ...editData } : c))
       );
       setEditIndex(null);
-      alert("Convidado atualizado com sucesso!");
+      toast.success("Convidado atualizado com sucesso!");
     } catch (error) {
-      alert(`Erro ao atualizar convidado: ${error.message}`);
+      toast.error(`Erro ao atualizar convidado: ${error.message}`);
     }
   };
 
@@ -91,11 +112,28 @@ function Confirmacao() {
   };
 
   const handleDeleteAcompanhante = (index) => {
-    if (!window.confirm("Tem certeza que deseja remover este acompanhante?")) return;
-    
-    setEditData((prev) => {
-      const updatedAcompanhantes = prev.acompanhantes.filter((_, i) => i !== index);
-      return { ...prev, acompanhantes: updatedAcompanhantes };
+    toast({
+      title: "Confirmação",
+      description: "Tem certeza que deseja remover este acompanhante?",
+      action: (
+        <div className="flex gap-3 mt-2">
+          <button 
+            onClick={() => {
+              setEditData((prev) => {
+                const updatedAcompanhantes = prev.acompanhantes.filter((_, i) => i !== index);
+                return { ...prev, acompanhantes: updatedAcompanhantes };
+              });
+              toast.success("Acompanhante removido!");
+            }}
+            className="bg-event-primary text-white px-3 py-1 rounded-full text-xs"
+          >
+            Confirmar
+          </button>
+          <button className="bg-gray-200 px-3 py-1 rounded-full text-xs">
+            Cancelar
+          </button>
+        </div>
+      ),
     });
   };
 
@@ -123,135 +161,218 @@ function Confirmacao() {
             c.id === convidado.id ? { ...c, confirmado: true } : c
           )
         );
-        alert("Confirmação enviada via WhatsApp!");
+        toast.success("Confirmação enviada via WhatsApp!");
       } else {
-        alert("Erro ao atualizar a confirmação.");
+        toast.error("Erro ao atualizar a confirmação.");
       }
     } catch (error) {
-      alert("Erro ao enviar a mensagem.");
+      toast.error("Erro ao enviar a mensagem.");
     }
 
     window.open(linkWhatsapp, "_blank");
   };
 
   return (
-    <div className="confirmacao-container">
-      <h1>Lista de Convidados por Evento</h1>
-      {loading ? (
-        <p>Carregando...</p>
-      ) : (
-        eventos.map((evento) => {
-          const convidadosEvento = convidados.filter((c) => c.evento_id === evento.id);
-          return (
-            <div className="evento-card" key={evento.id}>
-              <h3>{evento.nome}</h3>
-              <p>Total Convidados: {convidadosEvento.length}</p>
-              <table className="tabela-convidados">
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>Telefone</th>
-                    <th>Email</th>
-                    <th>Confirmado</th>
-                    <th>Acompanhantes</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {convidadosEvento.map((convidado) => (
-                    <tr key={convidado.id}>
-                      {editIndex === convidado.id ? (
-                        <>
-                          <td>
-                            <input
-                              type="text"
-                              name="nome"
-                              value={editData.nome}
-                              onChange={(e) => setEditData({ ...editData, nome: e.target.value })}
-                            />
-                          </td>
-                          <td>
-                            <input
-                              type="text"
-                              name="telefone"
-                              value={editData.telefone}
-                              onChange={(e) => setEditData({ ...editData, telefone: e.target.value })}
-                            />
-                          </td>
-                          <td>
-                            <input
-                              type="email"
-                              name="email"
-                              value={editData.email}
-                              onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                            />
-                          </td>
-                          <td>
-                            {editData.acompanhantes.map((acompanhante, index) => (
-                              <div key={index} className="acompanhante-edit">
-                                <input
-                                  type="text"
-                                  value={acompanhante.nome}
-                                  onChange={(e) => handleAcompanhanteChange(index, "nome", e.target.value)}
-                                  placeholder="Nome do acompanhante"
-                                />
-                                <input
-                                  type="text"
-                                  value={acompanhante.telefone}
-                                  onChange={(e) => handleAcompanhanteChange(index, "telefone", e.target.value)}
-                                  placeholder="Telefone do acompanhante"
-                                />
-                                <FaTrash onClick={() => handleDeleteAcompanhante(index)} />
-                              </div>
-                            ))}
-                            <button onClick={handleAddAcompanhante}>
-                              <FaPlus /> Adicionar Acompanhante
-                            </button>
-                          </td>
-                          <td>
-                            <button onClick={handleUpdate}>Salvar</button>
-                            <button onClick={() => setEditIndex(null)}>Cancelar</button>
-                          </td>
-                        </>
-                      ) : (
-                        <>
-                          <td>{convidado.nome}</td>
-                          <td>{convidado.telefone}</td>
-                          <td>{convidado.email}</td>
-                          <td>{convidado.confirmado ? "Sim" : "Não"}</td>
-                          <td>
-                            {convidado.acompanhantes.length > 0 ? (
-                              <ul>
-                                {convidado.acompanhantes.map((acompanhante, index) => (
-                                  <li key={index}>
-                                    {acompanhante.nome} ({acompanhante.telefone})
-                                  </li>
-                                ))}
-                              </ul>
-                            ) : (
-                              <p>Nenhum acompanhante</p>
-                            )}
-                          </td>
-                          <td>
-                            <div className="acoes">
-                              <FaEdit onClick={() => handleEdit(convidado.id)} />
-                              <FaTrash onClick={() => handleDeleteConvidado(convidado.id)} />
-                              <FaWhatsapp onClick={() => handleSendWhatsapp(convidado)} />
-                            </div>
-                          </td>
-                        </>
-                      )}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          );
-        })
-      )}
+    <div className="min-h-screen bg-gradient-to-b from-event-background to-event-accent/10 py-12 px-4 sm:px-6 lg:px-8 page-transition">
+      <div className="max-w-6xl mx-auto">
+        <button 
+          onClick={() => navigate(-1)}
+          className="flex items-center text-event-text-secondary hover:text-event-primary transition-colors mb-6"
+        >
+          <ChevronLeft className="h-4 w-4 mr-1" />
+          <span>Voltar</span>
+        </button>
+        
+        <div className="flex items-center mb-8">
+          <div className="event-chip bg-event-primary/10 text-event-primary mr-3">
+            Confirmações
+          </div>
+          <h1 className="text-3xl font-bold tracking-tight text-event-text-primary">
+            Lista de Convidados
+          </h1>
+        </div>
+        
+        {loading ? (
+          <div className="flex flex-col items-center justify-center p-12 space-y-4">
+            <Loader2 className="h-10 w-10 text-event-primary animate-spin" />
+            <p className="text-event-text-secondary">Carregando convidados...</p>
+          </div>
+        ) : (
+          <div className="space-y-8">
+            {eventos.map((evento) => {
+              const convidadosEvento = convidados.filter((c) => c.evento_id === evento.id);
+              return (
+                <div 
+                  className="event-card animate-fade-in backdrop-blur-sm bg-white/60 rounded-2xl overflow-hidden" 
+                  key={evento.id}
+                  style={{ animationDelay: `${evento.id * 50}ms` }}
+                >
+                  <div className="p-6 border-b border-neutral-100">
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center space-x-3">
+                        <CalendarIcon className="h-5 w-5 text-event-primary" />
+                        <h3 className="text-xl font-semibold text-event-text-primary">{evento.nome}</h3>
+                      </div>
+                      <div className="flex items-center">
+                        <div className="flex items-center mr-3 bg-event-success/10 text-event-success py-1 px-3 rounded-full text-xs font-medium">
+                          <Users className="h-3 w-3 mr-1" />
+                          <span>{convidadosEvento.length} convidados</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="overflow-x-auto">
+                    {convidadosEvento.length > 0 ? (
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="bg-gray-50/80">
+                            <th className="px-6 py-3 text-left font-medium text-event-text-secondary tracking-wider">Nome</th>
+                            <th className="px-6 py-3 text-left font-medium text-event-text-secondary tracking-wider">Telefone</th>
+                            <th className="px-6 py-3 text-left font-medium text-event-text-secondary tracking-wider">Email</th>
+                            <th className="px-6 py-3 text-left font-medium text-event-text-secondary tracking-wider">Confirmado</th>
+                            <th className="px-6 py-3 text-left font-medium text-event-text-secondary tracking-wider">Acompanhantes</th>
+                            <th className="px-6 py-3 text-right font-medium text-event-text-secondary tracking-wider">Ações</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                          {convidadosEvento.map((convidado) => (
+                            <tr key={convidado.id} className="hover:bg-gray-50/50 transition">
+                              {editIndex === convidado.id ? (
+                                <>
+                                  <td className="px-6 py-4">
+                                    <input
+                                      type="text"
+                                      name="nome"
+                                      value={editData.nome}
+                                      onChange={(e) => setEditData({ ...editData, nome: e.target.value })}
+                                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-event-primary/20"
+                                    />
+                                  </td>
+                                  <td className="px-6 py-4">
+                                    <input
+                                      type="text"
+                                      name="telefone"
+                                      value={editData.telefone}
+                                      onChange={(e) => setEditData({ ...editData, telefone: e.target.value })}
+                                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-event-primary/20"
+                                    />
+                                  </td>
+                                  <td className="px-6 py-4">
+                                    <input
+                                      type="email"
+                                      name="email"
+                                      value={editData.email}
+                                      onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+                                      className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-event-primary/20"
+                                    />
+                                  </td>
+                                  <td className="px-6 py-4">
+                                    {editData.acompanhantes.map((acompanhante, index) => (
+                                      <div key={index} className="flex items-center space-x-2">
+                                        <input
+                                          type="text"
+                                          value={acompanhante.nome}
+                                          onChange={(e) => handleAcompanhanteChange(index, "nome", e.target.value)}
+                                          placeholder="Nome do acompanhante"
+                                          className="w-full px-3 py-2 border border-gray-200 rounded-lg"
+                                        />
+                                        <input
+                                          type="text"
+                                          value={acompanhante.telefone}
+                                          onChange={(e) => handleAcompanhanteChange(index, "telefone", e.target.value)}
+                                          placeholder="Telefone do acompanhante"
+                                          className="w-full px-3 py-2 border border-gray-200 rounded-lg"
+                                        />
+                                        <button 
+                                          type="button" 
+                                          onClick={() => handleDeleteAcompanhante(index)}
+                                          className="text-red-500"
+                                        >
+                                          <Trash2 className="h-5 w-5" />
+                                        </button>
+                                      </div>
+                                    ))}
+                                    <button 
+                                      onClick={handleAddAcompanhante} 
+                                      className="text-event-primary mt-2"
+                                    >
+                                      <Plus className="h-4 w-4 inline-block mr-2" />
+                                      Adicionar acompanhante
+                                    </button>
+                                  </td>
+                                  <td className="px-6 py-4 text-right">
+                                    <button 
+                                      onClick={handleUpdate} 
+                                      className="bg-event-primary text-white px-3 py-1 rounded-full"
+                                    >
+                                      <Check className="h-4 w-4" />
+                                    </button>
+                                  </td>
+                                </>
+                              ) : (
+                                <>
+                                  <td className="px-6 py-4">{convidado.nome}</td>
+                                  <td className="px-6 py-4">{convidado.telefone}</td>
+                                  <td className="px-6 py-4">{convidado.email}</td>
+                                  <td className="px-6 py-4">
+                                    {convidado.confirmado ? (
+                                      <span className="text-green-500">Confirmado</span>
+                                    ) : (
+                                      <span className="text-red-500">Não confirmado</span>
+                                    )}
+                                  </td>
+                                  <td className="px-6 py-4">
+                                    {convidado.acompanhantes.length > 0 ? (
+                                      convidado.acompanhantes.map((acompanhante, index) => (
+                                        <div key={index} className="text-sm text-event-text-secondary">
+                                          {acompanhante.nome}
+                                        </div>
+                                      ))
+                                    ) : (
+                                      <span className="text-sm text-gray-400">Sem acompanhantes</span>
+                                    )}
+                                  </td>
+                                  <td className="px-6 py-4 text-right">
+                                    <button 
+                                      onClick={() => handleSendWhatsapp(convidado)} 
+                                      className="text-event-success mr-2"
+                                    >
+                                      <Send className="h-5 w-5" />
+                                    </button>
+                                    <button 
+                                      onClick={() => handleEdit(convidado.id)} 
+                                      className="text-event-primary mr-2"
+                                    >
+                                      <Edit className="h-5 w-5" />
+                                    </button>
+                                    <button 
+                                      onClick={() => handleDeleteConvidado(convidado.id)} 
+                                      className="text-event-error"
+                                    >
+                                      <Trash2 className="h-5 w-5" />
+                                    </button>
+                                  </td>
+                                </>
+                              )}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <div className="p-6 text-center text-event-text-secondary">
+                        Nenhum convidado encontrado.
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
 export default Confirmacao;
-
