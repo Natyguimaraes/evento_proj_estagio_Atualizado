@@ -36,7 +36,7 @@ function EventCredential() {
   };
 
   const gerarQRCode = () => {
-    const qrData = `https://meuevento.com/credencial/${convidadoId}`;
+    const qrData = `https://meuevento.com/credencial/${convidadoId}`; //qr code único gerado para cada convidado
     setQrCodeUrl(qrData);
     enviarWhatsApp(qrData);
   };
@@ -69,7 +69,7 @@ function EventCredential() {
           
           <div className="flex flex-col gap-2 text-center text-[#959FC6] mb-2">
             <p className="flex items-center justify-center gap-1">
-              <User className="w-4 h-4" /> Convidado: #{convidadoId}
+              <User className="w-4 h-4" /> Convidado: {convidadoId}
             </p>
             <p className="flex items-center justify-center gap-1">
               <MapPin className="w-4 h-4" /> Local do Evento
@@ -82,8 +82,8 @@ function EventCredential() {
             <button 
               onClick={() => confirmarPresenca("sim")}
               disabled={isLoading}
-              className="flex-1 bg-[#55835A] hover:bg-[#55835A]/90 text-white py-6 
-                         shadow-md hover:shadow-lg disabled:opacity-70"
+              className=" flex-1 bg-[#55835A] hover:bg-[#55835A]/90 text-white
+                         shadow-md hover:shadow-lg disabled:opacity-70 rounded-lg py-2"
             >
               {isLoading ? <Clock className="w-5 h-5 animate-spin mr-2" /> : <Check className="w-5 h-5 mr-2" />}
               Vou participar
@@ -92,10 +92,10 @@ function EventCredential() {
             <button 
               onClick={() => confirmarPresenca("nao")}
               disabled={isLoading}
-              className="flex-1 bg-[#959FC6] hover:bg-[#959FC6]/90 text-white py-6
-                         shadow-md hover:shadow-lg disabled:opacity-70"
+              className="text-center flex-1 bg-[#959FC6] hover:bg-[#959FC6]/90 text-white
+                         shadow-md hover:shadow-lg disabled:opacity-70 rounded-lg py-2 " 
             >
-              {isLoading ? <Clock className="w-5 h-5 animate-spin mr-2" /> : <X className="w-5 h-5 mr-2" />}
+              {isLoading ? <Clock className="w-4 h-5 animate-spin mr-2" /> : <X className="w-4 h-5 mr-2" />}
               Não vou participar
             </button>
           </div>
@@ -132,10 +132,6 @@ function EventCredential() {
               )}
             </div>
           )}
-        </div>
-        
-        <div className="relative z-10 text-sm text-[#959FC6]/70 flex justify-center pt-0 p-4">
-          <p>Evento especial • {new Date().toLocaleDateString()}</p>
         </div>
       </div>
     </div>
