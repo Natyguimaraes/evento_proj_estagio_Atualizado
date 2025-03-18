@@ -12,9 +12,11 @@ app.use(cors());
 app.use("/api/eventos", eventoRoutes);
 app.use("/api/eventos/:id", eventoRoutes)
 app.use("/api/administradores", adminRoutes);
+app.use("/convidados", convidadoRoutes);
 app.use("/api/convidados", convidadoRoutes);
 app.use("/api/convidados/:id", convidadoRoutes);
 app.use("/api/convidados/:id/confirmacao", convidadoRoutes);
+app.use("/api/convidados/:id/acompanhantes/:id", convidadoRoutes)
 app.listen(5000, () => {
   console.log(`Servidor rodando na porta 5000`);
 });

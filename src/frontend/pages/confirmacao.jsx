@@ -125,7 +125,6 @@ const Confirmacao = () => {
       return;
     }
     
-    // Para acompanhantes existentes com IDs
     const convidado = convidados.find(c => c.id === convidadoId);
     if (!convidado || !convidado.acompanhantes || !convidado.acompanhantes[acompanhanteIndex]) return;
     

@@ -132,6 +132,7 @@ function Eventos() {
                                   {totalParticipantes} participantes
                                 </div>
                               </div>
+                              
                               <h3 className="text-xl font-semibold text-event-text-primary group-hover:text-event-primary transition-colors">
                                 {evento.nome}
                               </h3>

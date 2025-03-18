@@ -6,6 +6,8 @@ import {
   createConvidado,
   updateConvidado,
   deleteConvidadoById,
+  deleteAcompanhanteById,
+  updateAcompanhanteById
 } from "../controller/convidado.js";
 
 
@@ -14,6 +16,8 @@ const router = express.Router();
 
 router.get("/", getAllConvidados);
 
+router.delete("/acompanhantes/:id", deleteAcompanhanteById)
+router.put("/acompanhantes/:id", updateAcompanhanteById)
 
 router.get("/:id", async (req, res) => {
   try {

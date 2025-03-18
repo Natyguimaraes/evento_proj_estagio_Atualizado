@@ -62,3 +62,23 @@ export function getAcompanhantesByConvidadoId(convidado_id) {
     });
   });
 }
+
+export function deleteAcompanhante(id) {
+  return new Promise((resolve, reject) => {
+    conexao.query("DELETE FROM acompanhante WHERE id = ?", [id], (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+}
+
+export function updateAcompanhante(id, novosDados) {
+  return new Promise((resolve, reject) => {
+    conexao.query("UPDATE acompanhante SET ? WHERE id = ?", [novosDados, id], (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+}
+
+
