@@ -88,40 +88,42 @@ router.get("/:id/confirmacao", async (req, res) => {
 });
 
 
-router.get("/api/convidados/:convidadoId/confirmacao", async (req, res) => {
+router.put("/api/convidados/:convidadoId/confirmacao", async (req, res) => {
   const { convidadoId } = req.params;
   const { status } = req.query;
 
-  console.log("ID recebido:", convidadoId);
-  console.log("Status recebido:", status);
-
-
+  // Validando os parâmetros
   if (!convidadoId || isNaN(convidadoId)) {
     return res.status(400).json({ erro: "ID inválido." });
   }
 
-
-  if (!status || (status !== "sim" && status !== "nao")) {
-    return res.status(400).json({ erro: "Status inválido." });
+  if (!status || !["sim", "nao"].includes(status)) {
+    return res.status(400).json({ erro: "Status inválido. Use 'sim' ou 'nao'." });
   }
 
+  // Convertendo 'sim' para 1 e 'nao' para 0
+  const confirmado = status === "sim" ? 1 : 0;
+
   try {
+    // Atualizando o banco de dados
+    const [resultado] = await conexao.query(
+      "UPDATE convidados SET confirmado = ? WHERE id = ?",
+      [confirmado, convidadoId]
+    );
 
-    const query = `UPDATE convidados SET confirmacao = ? WHERE id = ?`;
-    const [resultado] = await conexao.query(query, [status, convidadoId]);
-
- 
-    if (resultado.affectedRows > 0) {
-      res.json({ mensagem: `Presença do convidado ${convidadoId} confirmada como ${status}.` });
-    } else {
-      res.status(404).json({ erro: "Convidado não encontrado." });
+    // Verificando se o convidado foi encontrado e atualizado
+    if (resultado.affectedRows === 0) {
+      return res.status(404).json({ erro: "Convidado não encontrado." });
     }
+
+    // Retornando resposta de sucesso
+    res.json({
+      mensagem: `Confirmação recebida! O convidado ${convidadoId} ${status === "sim" ? "confirmou" : "não confirmou"} presença.`,
+    });
   } catch (error) {
-    console.error("Erro ao atualizar confirmação:", error);
+    console.error("Erro ao processar confirmação:", error);
     res.status(500).json({ erro: "Erro ao processar confirmação." });
   }
 });
-
-
 
 export default router;
