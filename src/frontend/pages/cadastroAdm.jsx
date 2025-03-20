@@ -16,20 +16,33 @@ function CadastroAdministrador() {
         e.preventDefault();
         setMessage("");
 
+        // Validação dos campos
         if (!nome.trim()) return setMessage("Nome é obrigatório.");
         if (!validarCPF(cpf)) return setMessage("CPF inválido. Digite 11 números.");
         if (!validarSenha(senha)) return setMessage("A senha deve ter no mínimo 8 caracteres.");
 
         try {
+            console.log("Enviando dados para o servidor:", { nome, cpf, senha }); // Log dos dados
+
             const response = await fetch("http://localhost:5000/api/administradores", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ nome, cpf, senha }),
             });
+
+            console.log("Resposta do servidor:", response); // Log da resposta
+
             const data = await response.json();
-            if (response.ok) navigate("/eventos");
-            else setMessage(data.message || "Erro ao cadastrar administrador.");
+            console.log("Dados da resposta:", data); // Log dos dados da resposta
+
+            if (response.ok) {
+                alert("Administrador cadastrado com sucesso!");
+                navigate("/eventos");
+            } else {
+                setMessage(data.message || "Erro ao cadastrar administrador.");
+            }
         } catch (error) {
+            console.error("Erro ao conectar ao servidor:", error); // Log de erro
             setMessage("Erro ao conectar ao servidor.");
         }
     };
@@ -102,6 +115,8 @@ function CadastroAdministrador() {
                         Cadastrar
                     </button>
                 </form>
+
+                {message && <p className="mt-4 text-center text-red-500">{message}</p>}
                 
                 <div className="mt-8">
                     <button 

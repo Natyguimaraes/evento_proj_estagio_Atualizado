@@ -14,7 +14,7 @@ const conexao = mysql.createConnection({
   password: process.env.DB_PASSWORD || "123456789",
 
   // eslint-disable-next-line no-undef
-  database: process.env.DB_NAME || "sistema_eventos",
+  database: process.env.DB_NAME || "eventos_atualizado",
 });
 conexao.connect((err) => {
   if (err) {
