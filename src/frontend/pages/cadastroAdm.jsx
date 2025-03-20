@@ -22,7 +22,7 @@ function CadastroAdministrador() {
         if (!validarSenha(senha)) return setMessage("A senha deve ter no mínimo 8 caracteres.");
 
         try {
-            console.log("Enviando dados para o servidor:", { nome, cpf, senha }); // Log dos dados
+            console.log("Enviando dados para o servidor:", { nome, cpf, senha }); 
 
             const response = await fetch("http://localhost:5000/api/administradores", {
                 method: "POST",
@@ -30,19 +30,18 @@ function CadastroAdministrador() {
                 body: JSON.stringify({ nome, cpf, senha }),
             });
 
-            console.log("Resposta do servidor:", response); // Log da resposta
+            console.log("Resposta do servidor:", response);
 
             const data = await response.json();
-            console.log("Dados da resposta:", data); // Log dos dados da resposta
+            console.log("Dados da resposta:", data);
 
             if (response.ok) {
                 alert("Administrador cadastrado com sucesso!");
-                navigate("/eventos");
             } else {
                 setMessage(data.message || "Erro ao cadastrar administrador.");
             }
         } catch (error) {
-            console.error("Erro ao conectar ao servidor:", error); // Log de erro
+            console.error("Erro ao conectar ao servidor:", error); 
             setMessage("Erro ao conectar ao servidor.");
         }
     };
@@ -61,8 +60,8 @@ function CadastroAdministrador() {
                     <div className="h-20 w-20 mx-auto mb-6 bg-gradient-to-br from-[#8470A1] to-[#959FC6] rounded-2xl flex items-center justify-center shadow-lg">
                         <FileText className="h-10 w-10 text-white" />
                     </div>
-                    <h1 className="text-3xl font-light tracking-tight text-[#333] mb-1">Cadastro de Administrador</h1>
-                    <p className="text-[#666] text-sm">Preencha os campos para criar sua conta</p>
+                    <h1 className="text-3xl font-light tracking-tight text-[#333] mb-1"> Administrador do evento </h1>
+                    <p className="text-[#666] text-sm"> Preencha os campos para criar sua conta </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">

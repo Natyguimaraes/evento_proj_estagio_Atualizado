@@ -16,20 +16,19 @@ export async function getAllEventos(req, res) {
 }
 
 export async function createEventoController(req, res) {
-  const {imagem_evento, nome, descricao, data_evento, local} = req.body;
+  const { nome, descricao, data_evento, local, administrador_id } = req.body;
+  const imagem_evento = req.file ? req.file.path : null; // Caminho da imagem salva
 
-  if (!imagem_evento || !nome || !descricao || !data_evento || !local) {
+  if (!imagem_evento ||!nome || !descricao || !data_evento || !local ) {
     return res.status(400).json({ error: "Todos os campos são obrigatórios." });
   }
 
   try {
-    const result = await createEvento(imagem_evento, nome, descricao, data_evento, local);
-    res
-      .status(201)
-      .json({ mensagem: "Evento cadastrado com sucesso", data: result });
+    const result = await createEvento(imagem_evento, nome, descricao, data_evento, local, administrador_id);
+    res.status(201).json({ message: "Evento cadastrado com sucesso!", data: result });
   } catch (err) {
     console.error("Erro ao cadastrar evento:", err);
-    res.status(500).json({ error: "Erro interno do servidor" });
+    res.status(500).json({ error: "Erro ao cadastrar evento." });
   }
 }
 
@@ -67,3 +66,5 @@ export async function deleteEventoController(req, res) {
     res.status(500).json({ error: "Erro interno ao excluir evento." });
   }
 }
+
+

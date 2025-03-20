@@ -1,10 +1,10 @@
 import banco from "../configuracao/banco.js"; // Configuração do banco de dados
 
 // Cadastrar um novo plano
-export function cadastrarPlano(nome, maxAcompanhantes) {
+export function cadastrarPlano(nome, maxConvidados) {
   return new Promise((resolve, reject) => {
-    const query = "INSERT INTO planos (nome, max_acompanhantes) VALUES (?, ?)";
-    banco.query(query, [nome, maxAcompanhantes], (err, results) => {
+    const query = "INSERT INTO planos (nome, max_convidados) VALUES (?, ?)";
+    banco.query(query, [nome, maxConvidados], (err, results) => {
       if (err) {
         console.error("Erro ao cadastrar plano:", err);
         return reject(err);
@@ -25,7 +25,7 @@ export function listarPlanos() {
   });
 }
 
-// Liberar um administrador (associar um plano e ativar a conta)
+
 export function liberarAdministrador(cpf, planoId) {
   return new Promise((resolve, reject) => {
     const query = "UPDATE administradores SET plano_id = ?, ativo = 1 WHERE cpf = ?";

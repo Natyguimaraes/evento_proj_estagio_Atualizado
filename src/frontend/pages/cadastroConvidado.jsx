@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { User, Phone, Mail, Calendar, Plus, X, ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";  // Importando o toast para tratamento de erro
+import { toast } from "sonner";  // toast o para tratamento de erro
 
 function CadastroConvidados() {
   const [nome, setNome] = useState("");

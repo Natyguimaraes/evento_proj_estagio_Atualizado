@@ -1,34 +1,32 @@
 import bcrypt from "bcrypt";
 import conexao from "../configuracao/banco.js";
 
-// Função para encontrar um administrador por CPF e senha
 export function findByCpfAndSenha(cpf, senha) {
   return new Promise((resolve, reject) => {
     conexao.query(
-      "SELECT * FROM administradores WHERE cpf = ? AND ativo = 1", // Verificando se o administrador está ativo
+      "SELECT * FROM administradores WHERE cpf = ? AND ativo = 1", 
       [cpf],
       async (err, results) => {
         if (err) return reject(err);
         
         if (results.length === 0) {
-          return resolve(null); // Nenhum administrador encontrado ou não está ativo
+          return resolve(null); 
         }
 
         const administrador = results[0];
 
-        // Comparando a senha fornecida com a senha armazenada no banco
+
         const isMatch = await bcrypt.compare(senha, administrador.senha);
         if (!isMatch) {
-          return resolve(null); // Senha não corresponde
+          return resolve(null); 
         }
 
-        resolve(administrador); // Retorna o administrador se a senha corresponder e estiver ativo
+        resolve(administrador); 
       }
     );
   });
 }
 
-// Função para criar um administrador
 export function createAdmin(nome, cpf, senha, planoId = 1) {
   return new Promise((resolve, reject) => {
     // Criptografando a senha
@@ -47,7 +45,7 @@ export function createAdmin(nome, cpf, senha, planoId = 1) {
   });
 }
 
-// Função para liberar acesso (sem alteração necessária aqui)
+
 export function liberarAcesso(cpf, planoId) {
   return new Promise((resolve, reject) => {
     conexao.query(

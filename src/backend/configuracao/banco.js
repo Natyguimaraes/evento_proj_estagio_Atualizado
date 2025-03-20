@@ -1,7 +1,7 @@
 import mysql from "mysql2";
 import dotenv from "dotenv";
 
-dotenv.config(); // serve pra carregar as variáveis do arquivo .env relacionadas ao banco de dados
+dotenv.config(); // carregar as variáveis do arquivo .env (banco de dados)
 
 const conexao = mysql.createConnection({
   // eslint-disable-next-line no-undef
@@ -11,10 +11,10 @@ const conexao = mysql.createConnection({
   user: process.env.DB_USER || "root",
 
   // eslint-disable-next-line no-undef
-  password: process.env.DB_PASSWORD || "123456789",
+  password: process.env.DB_PASSWORD || "senha",
 
   // eslint-disable-next-line no-undef
-  database: process.env.DB_NAME || "eventos_atualizado",
+  database: process.env.DB_NAME || "teste",
 });
 conexao.connect((err) => {
   if (err) {

@@ -9,14 +9,14 @@ import {
   
   // Cadastrar um novo plano
   export async function cadastrarPlanoController(req, res) {
-    const { nome, maxAcompanhantes } = req.body;
+    const { nome, maxConvidados } = req.body;
   
-    if (!nome || !maxAcompanhantes) {
+    if (!nome || !maxConvidados) {
       return res.status(400).json({ message: "Nome e maxAcompanhantes são obrigatórios." });
     }
   
     try {
-      const planoId = await cadastrarPlano(nome, maxAcompanhantes);
+      const planoId = await cadastrarPlano(nome, maxConvidados);
       res.status(201).json({ id: planoId, message: "Plano cadastrado com sucesso!" });
     } catch (error) {
       console.error("Erro ao cadastrar plano:", error);

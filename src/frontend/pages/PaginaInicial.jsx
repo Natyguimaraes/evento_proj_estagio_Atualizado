@@ -42,7 +42,7 @@ function PaginaInicial() {
             onClick={() => navigate("/cadastroAdm")}
             className="w-full py-3 rounded-xl text-white font-medium transition-all duration-500 ease-in-out transform hover:scale-[1.02] active:scale-[0.98] bg-gradient-to-r from-[#8470A1] to-[#959FC6] hover:shadow-lg hover:shadow-[#8470A1]/20"
           >
-            Cadastrar Administrador
+            Cadastrar Administrador do evento
           </button>
 
           <button

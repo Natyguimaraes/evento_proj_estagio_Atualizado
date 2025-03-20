@@ -2,14 +2,14 @@ import React, { useState } from "react";
 
 const CadastrarPlano = () => {
   const [nome, setNome] = useState("");
-  const [maxAcompanhantes, setMaxAcompanhantes] = useState("");
+  const [maxConvidados, setMaxConvidados] = useState("");
   const [erro, setErro] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validação dos campos
-    if (!nome || !maxAcompanhantes) {
+    if (!nome || !maxConvidados) {
       setErro("Nome e máximo de acompanhantes são obrigatórios.");
       return;
     }
@@ -22,7 +22,7 @@ const CadastrarPlano = () => {
         },
         body: JSON.stringify({
           nome,
-          maxAcompanhantes: parseInt(maxAcompanhantes), // Converte para número
+          maxConvidados: parseInt(maxConvidados), //convertendo para números a quantidade de convidados
         }),
       });
 
@@ -31,20 +31,20 @@ const CadastrarPlano = () => {
       }
 
       const data = await response.json();
-      alert(data.message || "Plano cadastrado com sucesso!"); // Exibe mensagem de sucesso
+      alert(data.message || "Plano cadastrado com sucesso!"); 
       setNome("");
-      setMaxAcompanhantes("");
-      setErro(""); // Limpa a mensagem de erro
+      setMaxConvidados("");
+      setErro(""); 
     } catch (error) {
       console.error("Erro ao cadastrar plano:", error);
-      setErro("Erro ao cadastrar plano. Tente novamente."); // Exibe mensagem de erro
+      setErro("Erro ao cadastrar plano. Tente novamente."); 
     }
   };
 
   return (
     <div style={styles.container}>
       <h2>Cadastrar Plano</h2>
-      {erro && <p style={{ color: "red" }}>{erro}</p>} {/* Exibe mensagem de erro */}
+      {erro && <p style={{ color: "red" }}>{erro}</p>}
       <form onSubmit={handleSubmit} style={styles.form}>
         <div style={styles.formGroup}>
           <label>Nome do Plano:</label>
@@ -56,11 +56,11 @@ const CadastrarPlano = () => {
           />
         </div>
         <div style={styles.formGroup}>
-          <label>Máximo de Acompanhantes:</label>
+          <label>Máximo de convidados:</label>
           <input
             type="number"
-            value={maxAcompanhantes}
-            onChange={(e) => setMaxAcompanhantes(e.target.value)}
+            value={maxConvidados}
+            onChange={(e) => setMaxConvidados(e.target.value)}
             required
           />
         </div>

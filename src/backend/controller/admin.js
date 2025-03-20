@@ -13,12 +13,11 @@ export async function loginAdmin(req, res) {
       return res.status(401).json({ message: "Credenciais inválidas" });
     }
 
-    // Verificar se o administrador está liberado (ativo)
     if (admin.ativo !== 1) {
       return res.status(403).json({ message: "Administrador não liberado ou desativado" });
     }
 
-    // Evitar enviar a senha do administrador na resposta
+    // para evitar de enviar a senha do administrador na resposta
     const { senha: _, ...adminData } = admin;
 
     res.status(200).json({ message: "Login realizado com sucesso", admin: adminData });
@@ -36,7 +35,7 @@ export async function registerAdmin(req, res) {
   }
 
   try {
-    const result = await createAdmin(nome, cpf, senha, plano_id || 1); // Garante que um plano_id seja enviado
+    const result = await createAdmin(nome, cpf, senha, plano_id || 1); 
     res.status(201).json({
       message: "Administrador cadastrado com sucesso",
       id: result.insertId,

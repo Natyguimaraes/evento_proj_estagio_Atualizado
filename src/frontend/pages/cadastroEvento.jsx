@@ -1,17 +1,16 @@
-
 import { useState } from 'react';
 import { ArrowLeft, CalendarIcon, ImagePlus, MapPin, PenLine, Sparkles } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { toast } from "sonner";
 
-
 function CadastroEventos() {
     const navigate = useNavigate();
-    const [imagem_evento, setImagemEvento] = useState('');
+    const [imagem_evento, setImagemEvento] = useState(null); // Alterado para File
     const [nome, setNome] = useState('');
     const [descricao, setDescricao] = useState('');
     const [dataEvento, setDataEvento] = useState('');
     const [local, setLocal] = useState('');
+    const [administrador_id, setAdministradorId] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,18 +20,26 @@ function CadastroEventos() {
         setSuccess('');
         setIsSubmitting(true);
 
-        if (!nome || !descricao || !dataEvento) {
+        if (!nome || !descricao || !dataEvento || !imagem_evento) {
             setError("Todos os campos são obrigatórios.");
             toast.error("Por favor, preencha todos os campos obrigatórios.");
             setIsSubmitting(false);
             return;
         }
-        
+
+        // Cria um FormData para enviar os dados do formulário
+        const formData = new FormData();
+        formData.append('imagem_evento', imagem_evento); // Adiciona o arquivo de imagem
+        formData.append('nome', nome);
+        formData.append('descricao', descricao);
+        formData.append('data_evento', dataEvento);
+        formData.append('local', local);
+        formData.append('administrador_id', administrador_id);
+
         try {
             const resposta = await fetch('http://localhost:5000/api/eventos', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ imagem_evento, nome, descricao, data_evento: dataEvento, local }),
+                body: formData, // Envia o FormData (não precisa de headers 'Content-Type')
             });
 
             const dados = await resposta.json();
@@ -40,11 +47,12 @@ function CadastroEventos() {
             if (resposta.ok) {
                 toast.success('Evento cadastrado com sucesso!');
                 setSuccess('Evento cadastrado com sucesso!');
-                setImagemEvento('');
+                setImagemEvento(null);
                 setNome('');
                 setDescricao('');
                 setDataEvento('');
                 setLocal('');
+                setAdministradorId('');
             } else {
                 setError(dados.erro || 'Erro ao cadastrar evento.');
                 toast.error(dados.erro || 'Erro ao cadastrar evento.');
@@ -103,11 +111,12 @@ function CadastroEventos() {
                                         type="file"
                                         accept="image/*"
                                         className="w-full px-4 py-3 rounded-xl bg-white/70 border border-gray-200 focus:border-event-primary focus:ring-1 focus:ring-event-primary focus:outline-none transition-all shadow-sm"
-                                        onChange={e => setImagemEvento(e.target.value)} 
+                                        onChange={e => setImagemEvento(e.target.files[0])} // Captura o arquivo selecionado
                                     />
                                 </div>
                             </div>
                             
+                            {/* Restante do formulário */}
                             <div className="space-y-2">
                                 <label className="flex items-center text-sm font-medium text-event-text-secondary">
                                     <Sparkles className="h-4 w-4 mr-2 text-event-primary" />

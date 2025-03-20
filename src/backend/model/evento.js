@@ -14,18 +14,18 @@ export function readEventos() {
   });
 }
 
-export function createEvento(imagem_evento, nome, descricao, data_evento, local) {
+export function createEvento(imagem_evento, nome, descricao, data_evento, local, administrador_id) {
   return new Promise((resolve, reject) => {
     conexao.query(
-      "INSERT INTO eventos (imagem_evento, nome, descricao, data_evento, local) VALUES (?, ?, ?, ?, ?)",
-      [imagem_evento, nome, descricao, data_evento, local],
+      "INSERT INTO eventos (imagem_evento, nome, descricao, data_evento, local, administrador_id) VALUES (?, ?, ?, ?, ?, ?)",
+      [imagem_evento, nome, descricao, data_evento, local, administrador_id],
       (err, result) => {
         if (err) {
           console.error("Erro ao criar evento:", err);
           reject("Erro ao criar evento");
           return;
         }
-        resolve({ id: result.insertId, imagem_evento,nome, descricao, data_evento, local});
+        resolve({ id: result.insertId, imagem_evento, nome, descricao, data_evento, local, administrador_id });
       }
     );
   });

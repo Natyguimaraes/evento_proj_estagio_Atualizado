@@ -69,7 +69,7 @@ const LiberarAdministrador = () => {
                         <option value="">Selecione um plano</option>
                         {planos.map((plano) => (
                             <option key={plano.id} value={plano.id}>
-                                {plano.nome} (Máx. {plano.max_acompanhantes} acompanhantes)
+                                {plano.nome} (Máx. {plano.max_convidados} convidados)
                             </option>
                         ))}
                     </select>
