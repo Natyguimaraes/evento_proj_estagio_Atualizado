@@ -24,10 +24,9 @@ export async function getAllConvidados(req, res) {
   try {
     const convidados = await read();
 
-    // Buscar acompanhantes para cada convidado e adicionar ao convidado
     for (const convidado of convidados) {
       const acompanhantes = await getAcompanhantesByConvidadoId(convidado.id);
-      convidado.acompanhantes = acompanhantes; // Armazenar acompanhantes completos
+      convidado.acompanhantes = acompanhantes; 
     }
 
     res.json(convidados);
@@ -36,13 +35,17 @@ export async function getAllConvidados(req, res) {
   }
 }
 
-
 export async function updateConvidado(req, res) {
   const { id } = req.params;
-  const novosDados = req.body;
+  const { nome, telefone, email } = req.body; 
+
+ 
+  if (!nome || !telefone || !email) {
+    return res.status(400).json({ error: "Campos 'nome', 'telefone' e 'email' são obrigatórios." });
+  }
 
   try {
-    const result = await update(id, novosDados);
+    const result = await update(id, { nome, telefone, email }); 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "Nenhum convidado encontrado para atualizar." });
     }

@@ -38,7 +38,13 @@ export function createAcompanhante(nome, telefone, email, convidado_id) {
 
 export function update(id, novosDados) {
   return new Promise((resolve, reject) => {
-    conexao.query("UPDATE convidados SET ? WHERE id = ?", [novosDados, id], (err, result) => {
+   
+    const camposValidos = {};
+    if (novosDados.nome) camposValidos.nome = novosDados.nome;
+    if (novosDados.telefone) camposValidos.telefone = novosDados.telefone;
+    if (novosDados.email) camposValidos.email = novosDados.email;
+
+    conexao.query("UPDATE convidados SET ? WHERE id = ?", [camposValidos, id], (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });

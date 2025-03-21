@@ -17,7 +17,6 @@ function Eventos() {
   const [eventoSelecionado, setEventoSelecionado] = useState(null);
   const navigate = useNavigate();
 
-
   const apiUrlEventos = "http://localhost:5000/api/eventos";
   const apiUrlConvidados = "http://localhost:5000/api/convidados";
   const textoCarregando = "Carregando eventos...";
@@ -27,15 +26,22 @@ function Eventos() {
     async function fetchDados() {
       setLoading(true);
       try {
-        const responseEventos = await fetch(apiUrlEventos);
+        // Recupera o ID do administrador logado
+        const administradorId = localStorage.getItem("administrador_id");
+
+        // Busca os eventos do administrador logado
+        const responseEventos = await fetch(
+          `${apiUrlEventos}?administrador_id=${administradorId}`
+        );
         if (!responseEventos.ok) throw new Error("Erro ao buscar eventos");
         const dataEventos = await responseEventos.json();
 
+        // Busca todos os convidados
         const responseConvidados = await fetch(apiUrlConvidados);
-        if (!responseConvidados.ok)
-          throw new Error("Erro ao buscar convidados");
+        if (!responseConvidados.ok) throw new Error("Erro ao buscar convidados");
         const dataConvidados = await responseConvidados.json();
 
+        // Atualiza os estados com os dados recebidos
         setEventos(dataEventos);
         setConvidados(dataConvidados);
       } catch (error) {
@@ -75,7 +81,7 @@ function Eventos() {
               <p className="text-event-text-secondary">{textoCarregando}</p>
             </div>
           ) : (
-            <div className=" bg-white/50 rounded-3xl shadow-xl border border-[#bec2c7] overflow-hidden">
+            <div className="bg-white/50 rounded-3xl shadow-xl border border-[#bec2c7] overflow-hidden">
               <div className="p-6 sm:p-8">
                 <div className="flex items-center mb-6">
                   <CalendarIcon className="h-5 w-5 text-event-primary mr-2" />
@@ -92,7 +98,7 @@ function Eventos() {
                       );
                       const totalConvidados = convidadosEvento.length;
                       const totalAcompanhantes = convidadosEvento.reduce(
-                        (acc, c) => acc + (c.acompanhantes.length || 0),
+                        (acc, c) => acc + (c.acompanhantes?.length || 0),
                         0
                       );
                       const totalParticipantes =
@@ -132,7 +138,7 @@ function Eventos() {
                                   {totalParticipantes} participantes
                                 </div>
                               </div>
-                              
+
                               <h3 className="text-xl font-semibold text-event-text-primary group-hover:text-event-primary transition-colors">
                                 {evento.nome}
                               </h3>
