@@ -14,7 +14,7 @@ export function findByCpfAndSenha(cpf, senha) {
         }
 
         const administrador = results[0];
-
+        console.log("Administrador encontrado:", administrador); // Log para depuração
 
         const isMatch = await bcrypt.compare(senha, administrador.senha);
         if (!isMatch) {
@@ -27,15 +27,15 @@ export function findByCpfAndSenha(cpf, senha) {
   });
 }
 
-export function createAdmin(nome, cpf, senha, planoId = 1) {
+export function createAdmin(nome, cpf, senha) {
   return new Promise((resolve, reject) => {
     // Criptografando a senha
     bcrypt.hash(senha, 10, (err, hashedPassword) => {
       if (err) return reject(err);
 
       conexao.query(
-        "INSERT INTO administradores (nome, cpf, senha, plano_id) VALUES (?, ?, ?, ?)",
-        [nome, cpf, hashedPassword, planoId],
+        "INSERT INTO administradores (nome, cpf, senha) VALUES (?, ?, ?)",
+        [nome, cpf, hashedPassword],
         (err, result) => {
           if (err) return reject(err);
           resolve(result);
@@ -56,5 +56,20 @@ export function liberarAcesso(cpf, planoId) {
         resolve(result);
       }
     );
+  });
+}
+
+export function buscarAdministradorPorId(id) {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT administradores.*, planos.nome as plano_nome 
+      FROM administradores 
+      LEFT JOIN planos ON administradores.plano_id = planos.id 
+      WHERE administradores.id = ?
+    `;
+    conexao.query(query, [id], (err, results) => {
+      if (err) return reject(err);
+      resolve(results[0] || null);
+    });
   });
 }

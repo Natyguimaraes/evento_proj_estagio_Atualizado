@@ -1,5 +1,6 @@
 
 import express from "express";
+
 import {
   cadastrarPlanoController,
   listarPlanosController,
@@ -7,14 +8,14 @@ import {
   listarAdministradoresController,
   desativarAdministradorController,
   listarEventosPorAdministradorController,
+  buscarAdministradorPorIdController,
 } from "../controller/SuperAdminController.js";
 
 
 const router = express.Router();
 
 // Rota para cadastrar um novo plano
-router.post("/planos", cadastrarPlanoController);
-
+  router.post("/planos", cadastrarPlanoController);
 // Rota para listar todos os planos
 router.get("/planos", listarPlanosController);
 
@@ -29,5 +30,8 @@ router.put("/administradores/:id/desativar", desativarAdministradorController);
 
 // Rota para listar eventos criados por um administrador
 router.get("/administradores/:id/eventos", listarEventosPorAdministradorController);
+
+router.get("/administradores/:id", buscarAdministradorPorIdController);
+
 
 export default router;

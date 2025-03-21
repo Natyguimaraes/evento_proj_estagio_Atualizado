@@ -5,6 +5,7 @@ import {
     listarAdministradores,
     desativarAdministrador,
     listarEventosPorAdministrador,
+    buscarAdministradorPorId
   } from "../model/SuperAdminModel.js";
   
   // Cadastrar um novo plano
@@ -89,3 +90,20 @@ import {
       res.status(500).json({ message: "Erro ao listar eventos." });
     }
   }
+
+  // Buscar informações do administrador por ID
+export async function buscarAdministradorPorIdController(req, res) {
+  const { id } = req.params;
+
+  try {
+    const administrador = await buscarAdministradorPorId(id);
+    if (administrador) {
+      res.status(200).json(administrador);
+    } else {
+      res.status(404).json({ message: "Administrador não encontrado." });
+    }
+  } catch (error) {
+    console.error("Erro ao buscar administrador:", error);
+    res.status(500).json({ message: "Erro ao buscar administrador." });
+  }
+}

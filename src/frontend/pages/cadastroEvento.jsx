@@ -19,22 +19,46 @@ function CadastroEventos() {
         setError('');
         setSuccess('');
         setIsSubmitting(true);
-
-        if (!nome || !descricao || !dataEvento || !imagem_evento) {
-            setError("Todos os campos são obrigatórios.");
-            toast.error("Por favor, preencha todos os campos obrigatórios.");
-            setIsSubmitting(false);
-            return;
+      
+        // Recupera o adminId do localStorage
+        const adminId = localStorage.getItem("adminId");
+        console.log("Admin ID recuperado do localStorage:", adminId); // Log para depuração
+      
+        if (!adminId) {
+          setError("ID do administrador não encontrado.");
+          toast.error("ID do administrador não encontrado.");
+          setIsSubmitting(false);
+          return;
+        }
+      
+        // Converte o adminId para número
+        const adminIdNumber = Number(adminId);
+        console.log("Admin ID convertido para número:", adminIdNumber); // Log para depuração
+      
+        if (isNaN(adminIdNumber)) {
+          setError("ID do administrador inválido.");
+          toast.error("ID do administrador inválido.");
+          setIsSubmitting(false);
+          return;
         }
 
         // Cria um FormData para enviar os dados do formulário
         const formData = new FormData();
-        formData.append('imagem_evento', imagem_evento); // Adiciona o arquivo de imagem
+        formData.append('imagem_evento', imagem_evento);
         formData.append('nome', nome);
         formData.append('descricao', descricao);
         formData.append('data_evento', dataEvento);
         formData.append('local', local);
-        formData.append('administrador_id', administrador_id);
+        formData.append('administrador_id', adminIdNumber); // Adiciona o adminId ao FormData
+
+        console.log("Dados do FormData:", { // Log para depuração
+            nome,
+            descricao,
+            dataEvento,
+            local,
+            administrador_id: adminIdNumber,
+            imagem_evento: imagem_evento ? imagem_evento.name : "Nenhuma imagem selecionada",
+        });
 
         try {
             const resposta = await fetch('http://localhost:5000/api/eventos', {
@@ -43,6 +67,7 @@ function CadastroEventos() {
             });
 
             const dados = await resposta.json();
+            console.log("Resposta da API:", dados); // Log para depuração
 
             if (resposta.ok) {
                 toast.success('Evento cadastrado com sucesso!');
@@ -52,7 +77,6 @@ function CadastroEventos() {
                 setDescricao('');
                 setDataEvento('');
                 setLocal('');
-                setAdministradorId('');
             } else {
                 setError(dados.erro || 'Erro ao cadastrar evento.');
                 toast.error(dados.erro || 'Erro ao cadastrar evento.');

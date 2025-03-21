@@ -68,3 +68,28 @@ export function listarEventosPorAdministrador(administradorId) {
     });
   });
 }
+
+export function buscarAdministradorPorId(id) {
+  return new Promise((resolve, reject) => {
+    const query = `
+      SELECT administradores.*, planos.nome as plano_nome 
+      FROM administradores 
+      LEFT JOIN planos ON administradores.plano_id = planos.id 
+      WHERE administradores.id = ?
+    `;
+    banco.query(query, [id], (err, results) => {
+      if (err) return reject(err);
+      resolve(results[0] || null);
+    });
+  });
+}
+
+export function buscarAdministradorPorCpf(cpf) {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM administradores WHERE cpf = ?";
+    banco.query(query, [cpf], (err, results) => {
+      if (err) return reject(err);
+      resolve(results[0] || null);
+    });
+  });
+}

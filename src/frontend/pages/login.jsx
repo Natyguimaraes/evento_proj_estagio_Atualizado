@@ -13,31 +13,43 @@ function LoginAdministrador() {
     e.preventDefault();
     setMessage("");
     setIsLoading(true);
-
+  
     try {
       const response = await fetch("http://localhost:5000/api/administradores/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cpf, senha }),
       });
-
+  
       const data = await response.json();
-
+  
       if (!response.ok) {
         throw new Error(data.message || "Erro ao processar solicitação");
       }
-
+  
+      // Armazena o token no localStorage
+      localStorage.setItem("token", data.token);
+  
+      // Armazena o adminId no localStorage
+      if (data.admin && data.admin.id) {
+        localStorage.setItem("adminId", data.admin.id.toString()); // Converte para string e armazena
+        console.log("Admin ID armazenado:", data.admin.id); // Log para depuração
+      } else {
+        throw new Error("ID do administrador não encontrado na resposta.");
+      }
+  
       setMessage(data.message);
       console.log("Admin logado:", data.admin);
+  
+      // Redireciona para a página de eventos
       navigate("/eventos");
-      
     } catch (error) {
       setMessage(error.message);
+      console.error("Erro no login:", error);
     } finally {
       setIsLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#f8f8f8] to-[#CCCAC4]/30">
       <div className="absolute inset-0 overflow-hidden">
@@ -108,6 +120,8 @@ function LoginAdministrador() {
           </button>
         </form>
         
+        {message && <p className="mt-4 text-center text-red-500">{message}</p>}
+
         <div className="mt-8">
           <button 
             onClick={() => navigate("/cadastroAdm")} 
@@ -122,4 +136,3 @@ function LoginAdministrador() {
 }
 
 export default LoginAdministrador;
-

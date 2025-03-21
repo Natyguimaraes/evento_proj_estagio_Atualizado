@@ -34,6 +34,7 @@ function CadastroAdministrador() {
 
             const data = await response.json();
             console.log("Dados da resposta:", data);
+            console.error("Erro completo:", data.error);
 
             if (response.ok) {
                 alert("Administrador cadastrado com sucesso!");
@@ -43,6 +44,7 @@ function CadastroAdministrador() {
         } catch (error) {
             console.error("Erro ao conectar ao servidor:", error); 
             setMessage("Erro ao conectar ao servidor.");
+            
         }
     };
 
@@ -131,3 +133,4 @@ function CadastroAdministrador() {
 }
 
 export default CadastroAdministrador;
+
