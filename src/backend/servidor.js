@@ -1,20 +1,20 @@
 import express from "express";
 import cors from "cors";
-import path from "path"; // Importando path para manipular caminhos de diretórios
+import path from "path"; 
 import eventoRoutes from "./rotas/eventos.js";
 import adminRoutes from "./rotas/administradores.js";
 import convidadoRoutes from "./rotas/convidados.js";
 import superadminRoutes from "./rotas/superadmin.js";
 
-// Obtendo o diretório atual com 'import.meta.url'
+
 const app = express();
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname); // Corrigindo __dirname para o modo ESM
+const __dirname = path.dirname(new URL(import.meta.url).pathname); 
 
 app.use(express.json());
 app.use(cors());
 
-// Configuração para servir arquivos estáticos da pasta "uploads"
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use("/api/eventos", eventoRoutes);

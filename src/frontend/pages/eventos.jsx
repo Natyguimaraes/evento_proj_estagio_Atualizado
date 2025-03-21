@@ -17,7 +17,7 @@ function Eventos() {
   const [eventoSelecionado, setEventoSelecionado] = useState(null);
   const navigate = useNavigate();
 
-  // Configurações diretamente no arquivo
+
   const apiUrlEventos = "http://localhost:5000/api/eventos";
   const apiUrlConvidados = "http://localhost:5000/api/convidados";
   const textoCarregando = "Carregando eventos...";
@@ -53,7 +53,7 @@ function Eventos() {
 
   return (
     <>
-      <Menu className="fixed top-0 left-0 w-full z-50" /> {/* Menu fixo */}
+      <Menu className="fixed top-0 left-0 w-full z-50" />
       <div className="min-h-screen bg-gradient-to-b from-event-background to-event-accent/10 py-12 px-4 sm:px-6 lg:px-8 page-transition pt-20 z-0">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">

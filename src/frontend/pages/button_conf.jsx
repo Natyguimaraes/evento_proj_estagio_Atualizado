@@ -21,7 +21,7 @@ function EventCredential() {
         console.log("Dados do evento recebidos:", data);
 
         if (data.length > 0) {
-          setEvento(data[0]); // Pegamos o primeiro item do array
+          setEvento(data[0]); 
         } else {
           console.error("Nenhum evento encontrado.");
         }
@@ -84,7 +84,7 @@ function EventCredential() {
 
         {evento && (
           <>
-            {/* Imagem estática substituída pela URL fornecida */}
+            
             <img
               src="https://cdn0.casamentos.com.br/vendor/8146/3_2/960/jpg/reserva-eventos-casamento-no-jardim-rj2_13_158146.jpeg"
               alt="Imagem do Evento"

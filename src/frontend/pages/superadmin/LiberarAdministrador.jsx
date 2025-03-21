@@ -5,7 +5,6 @@ const LiberarAdministrador = () => {
     const [planoId, setPlanoId] = useState("");
     const [planos, setPlanos] = useState([]);
 
-    // Carregar planos ao montar o componente
     useEffect(() => {
         const fetchPlanos = async () => {
             try {

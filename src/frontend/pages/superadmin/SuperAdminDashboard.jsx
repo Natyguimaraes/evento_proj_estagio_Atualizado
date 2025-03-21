@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import CadastrarPlano from './CadastrarPlano'; // Importe o componente CadastrarPlano
-import LiberarAdministrador from './LiberarAdministrador'; // Importe o componente LiberarAdministrador
+import CadastrarPlano from './CadastrarPlano'; 
+import LiberarAdministrador from './LiberarAdministrador'; 
 
 const SuperAdminDashboard = () => {
-    const [paginaAtiva, setPaginaAtiva] = useState(''); // Estado para controlar a página ativa
-
+    const [paginaAtiva, setPaginaAtiva] = useState(''); 
     return (
         <div style={styles.container}>
             <h1>Painel do Superadministrador</h1>
@@ -26,7 +25,7 @@ const SuperAdminDashboard = () => {
                 </Link>
             </nav>
 
-            {/* Renderiza a página ativa com base no estado */}
+           
             {paginaAtiva === 'cadastrar-plano' && <CadastrarPlano />}
             {paginaAtiva === 'liberar-administrador' && <LiberarAdministrador />}
         </div>

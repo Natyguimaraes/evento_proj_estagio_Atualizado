@@ -27,21 +27,20 @@ function LoginAdministrador() {
         throw new Error(data.message || "Erro ao processar solicitação");
       }
   
-      // Armazena o token no localStorage
+      
       localStorage.setItem("token", data.token);
   
-      // Armazena o adminId no localStorage
+      
       if (data.admin && data.admin.id) {
-        localStorage.setItem("adminId", data.admin.id.toString()); // Converte para string e armazena
-        console.log("Admin ID armazenado:", data.admin.id); // Log para depuração
-      } else {
+        localStorage.setItem("adminId", data.admin.id.toString()); 
+        console.log("Admin ID armazenado:", data.admin.id); 
         throw new Error("ID do administrador não encontrado na resposta.");
       }
   
       setMessage(data.message);
       console.log("Admin logado:", data.admin);
   
-      // Redireciona para a página de eventos
+      
       navigate("/eventos");
     } catch (error) {
       setMessage(error.message);

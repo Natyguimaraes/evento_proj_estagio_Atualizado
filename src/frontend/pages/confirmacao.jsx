@@ -145,7 +145,7 @@ const Confirmacao = () => {
 
       if (!resposta.ok) throw new Error("Erro ao excluir acompanhante");
 
-      // Atualiza a lista removendo o acompanhante excluído
+    
       setConvidados((prev) =>
         prev.map((convidado) =>
           convidado.id === convidadoId

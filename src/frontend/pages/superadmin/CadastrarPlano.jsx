@@ -8,7 +8,7 @@ const CadastrarPlano = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validação dos campos
+
     if (!nome || !maxConvidados) {
       setErro("Nome e máximo de acompanhantes são obrigatórios.");
       return;
@@ -22,7 +22,7 @@ const CadastrarPlano = () => {
         },
         body: JSON.stringify({
           nome,
-          maxConvidados: parseInt(maxConvidados), //convertendo para números a quantidade de convidados
+          maxConvidados: parseInt(maxConvidados), 
         }),
       });
 

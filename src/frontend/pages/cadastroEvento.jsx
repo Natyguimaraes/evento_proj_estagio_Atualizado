@@ -20,7 +20,7 @@ function CadastroEventos() {
         setSuccess('');
         setIsSubmitting(true);
       
-        // Recupera o adminId do localStorage
+
         const adminId = localStorage.getItem("adminId");
         console.log("Admin ID recuperado do localStorage:", adminId); // Log para depuração
       
@@ -30,10 +30,9 @@ function CadastroEventos() {
           setIsSubmitting(false);
           return;
         }
-      
-        // Converte o adminId para número
+
         const adminIdNumber = Number(adminId);
-        console.log("Admin ID convertido para número:", adminIdNumber); // Log para depuração
+        console.log("Admin ID convertido para número:", adminIdNumber); 
       
         if (isNaN(adminIdNumber)) {
           setError("ID do administrador inválido.");
@@ -42,16 +41,16 @@ function CadastroEventos() {
           return;
         }
 
-        // Cria um FormData para enviar os dados do formulário
+        
         const formData = new FormData();
         formData.append('imagem_evento', imagem_evento);
         formData.append('nome', nome);
         formData.append('descricao', descricao);
         formData.append('data_evento', dataEvento);
         formData.append('local', local);
-        formData.append('administrador_id', adminIdNumber); // Adiciona o adminId ao FormData
+        formData.append('administrador_id', adminIdNumber); 
 
-        console.log("Dados do FormData:", { // Log para depuração
+        console.log("Dados do FormData:", {
             nome,
             descricao,
             dataEvento,
@@ -63,11 +62,11 @@ function CadastroEventos() {
         try {
             const resposta = await fetch('http://localhost:5000/api/eventos', {
                 method: 'POST',
-                body: formData, // Envia o FormData (não precisa de headers 'Content-Type')
+                body: formData, 
             });
 
             const dados = await resposta.json();
-            console.log("Resposta da API:", dados); // Log para depuração
+            console.log("Resposta da API:", dados);
 
             if (resposta.ok) {
                 toast.success('Evento cadastrado com sucesso!');
@@ -135,7 +134,7 @@ function CadastroEventos() {
                                         type="file"
                                         accept="image/*"
                                         className="w-full px-4 py-3 rounded-xl bg-white/70 border border-gray-200 focus:border-event-primary focus:ring-1 focus:ring-event-primary focus:outline-none transition-all shadow-sm"
-                                        onChange={e => setImagemEvento(e.target.files[0])} // Captura o arquivo selecionado
+                                        onChange={e => setImagemEvento(e.target.files[0])} 
                                     />
                                 </div>
                             </div>
