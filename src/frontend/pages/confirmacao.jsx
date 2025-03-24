@@ -32,9 +32,14 @@ const Confirmacao = () => {
     async function fetchDados() {
       setLoading(true);
       try {
+        const adminId = localStorage.getItem("adminId");
+        if (!adminId) {
+          throw new Error("ID do administrador não encontrado.");
+        }
+
         const [eventosRes, convidadosRes] = await Promise.all([
-          fetch("http://localhost:5000/api/eventos"),
-          fetch("http://localhost:5000/api/convidados"),
+          fetch(`http://localhost:5000/api/eventos/por-administrador?administrador_id=${adminId}`),
+          fetch(`http://localhost:5000/api/convidados?administrador_id=${adminId}`),
         ]);
 
         if (!eventosRes.ok || !convidadosRes.ok)
@@ -276,7 +281,7 @@ const Confirmacao = () => {
           </div>
         ) : (
           <div className="space-y-8">
-            {eventos.map((evento) => {
+           {eventos.map((evento) => {
               const convidadosEvento = convidados.filter(
                 (c) => c.evento_id === evento.id
               );

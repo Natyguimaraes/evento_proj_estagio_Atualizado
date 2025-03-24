@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { QRCodeCanvas } from "qrcode.react";
-import { Check, X, MessageSquare, Clock, Calendar, User, MapPin } from "lucide-react";
+import { Check, X, MessageSquare, Clock, Calendar, MapPin } from "lucide-react";
 
 function EventCredential() {
-  const { convidadoId } = useParams();
+  const { eventoId, convidadoId } = useParams();
   const [evento, setEvento] = useState(null);
   const [mensagem, setMensagem] = useState("");
   const [qrCodeUrl, setQrCodeUrl] = useState("");
@@ -12,37 +12,40 @@ function EventCredential() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if (!eventoId) {
+      console.error("Evento ID não disponível.");
+      return;
+    }
+
     const buscarEvento = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/eventos/${convidadoId}`);
-        if (!response.ok) throw new Error("Erro ao carregar evento.");
+        const response = await fetch(`http://localhost:5000/api/eventos/eventos/${eventoId}`);
 
+        if (!response.ok) throw new Error("Erro ao carregar evento.");
+       
         const data = await response.json();
         console.log("Dados do evento recebidos:", data);
-
-        if (data.length > 0) {
-          setEvento(data[0]); 
+        if (data) {
+          setEvento(data);
         } else {
           console.error("Nenhum evento encontrado.");
         }
       } catch (error) {
+        setMensagem("Erro ao carregar evento.");
         console.error("Erro ao buscar evento:", error);
       }
     };
 
     buscarEvento();
-  }, [convidadoId]);
+  }, [eventoId]);
 
   const confirmarPresenca = async (status) => {
     setIsLoading(true);
     const url = `http://localhost:5000/api/convidados/${convidadoId}/confirmacao?status=${status}`;
-    console.log("Chamando API:", url);
 
     try {
       const response = await fetch(url, { method: "GET" });
-      if (!response.ok) {
-        throw new Error("Erro ao confirmar presença.");
-      }
+      if (!response.ok) throw new Error("Erro ao confirmar presença.");
 
       if (status === "sim") {
         setMensagem("Presença confirmada! ✅");
@@ -68,9 +71,7 @@ function EventCredential() {
     const whatsappApiUrl = `http://localhost:5000/api/whatsapp/enviar?convidadoId=${convidadoId}&qrCode=${encodeURIComponent(qrData)}`;
     try {
       const response = await fetch(whatsappApiUrl, { method: "GET" });
-      if (!response.ok) {
-        throw new Error("Erro ao enviar WhatsApp.");
-      }
+      if (!response.ok) throw new Error("Erro ao enviar WhatsApp.");
       setWhatsappEnviado(true);
     } catch (error) {
       console.error("Erro ao enviar WhatsApp:", error);
@@ -84,9 +85,8 @@ function EventCredential() {
 
         {evento && (
           <>
-            
             <img
-              src="https://cdn0.casamentos.com.br/vendor/8146/3_2/960/jpg/reserva-eventos-casamento-no-jardim-rj2_13_158146.jpeg"
+              src={`http://localhost:5000/${evento.imagem_evento}`}
               alt="Imagem do Evento"
               className="w-full h-40 object-cover rounded-t-2xl"
             />
@@ -97,20 +97,14 @@ function EventCredential() {
                   {evento.nome || "Nome não disponível"}
                 </h1>
               </div>
-              <p className="text-center text-[#A7B6D5]">
-                {evento.descricao || "Descrição não disponível"}
-              </p>
-
+              <p className="text-center text-[#A7B6D5]">{evento.descricao || "Descrição não disponível"}</p>
               <p className="flex items-center justify-center gap-1 text-[#B0C4D4]">
                 <MapPin className="w-4 h-4" />
                 {evento.local || "Local não informado"}
               </p>
-
               <p className="flex items-center justify-center gap-1 text-[#B0C4D4]">
                 <Clock className="w-4 h-4" />
-                {evento.data_evento
-                  ? new Date(evento.data_evento).toLocaleString("pt-BR")
-                  : "Data não disponível"}
+                {evento.data_evento ? new Date(evento.data_evento).toLocaleString("pt-BR") : "Data não disponível"}
               </p>
             </div>
           </>

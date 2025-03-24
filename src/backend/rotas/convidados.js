@@ -1,24 +1,29 @@
 import express from "express";
 import conexao from "../configuracao/banco.js"; 
-
 import {
   getAllConvidados,
   createConvidado,
   updateConvidado,
   deleteConvidadoById,
   deleteAcompanhanteById,
-  updateAcompanhanteById
+  updateAcompanhanteById,
+  
 } from "../controller/convidado.js";
-
 
 const router = express.Router();
 
-
+// Rota: GET /api/convidados?administrador_id=24
 router.get("/", getAllConvidados);
 
-router.delete("/acompanhantes/:id", deleteAcompanhanteById)
-router.put("/acompanhantes/:id", updateAcompanhanteById)
 
+
+// Rota: DELETE /api/convidados/acompanhantes/:id
+router.delete("/acompanhantes/:id", deleteAcompanhanteById);
+
+// Rota: PUT /api/convidados/acompanhantes/:id
+router.put("/acompanhantes/:id", updateAcompanhanteById);
+
+// Rota: GET /api/convidados/:id
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -39,11 +44,15 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Rota: POST /api/convidados
 router.post("/", createConvidado);
 
+// Rota: PUT /api/convidados/:id
 router.put("/:id", updateConvidado);
 
+// Rota: DELETE /api/convidados/:id
 router.delete("/:id", deleteConvidadoById);
+
 
 router.get("/:id/confirmacao", async (req, res) => {
   const { id } = req.params;

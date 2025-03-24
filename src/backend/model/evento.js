@@ -14,6 +14,40 @@ export function readEventos() {
   });
 }
 
+export function readEventoPorId(id) {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM eventos WHERE id = ?";
+    conexao.query(query, [id], (err, result) => {
+      if (err) {
+        console.error("Erro ao buscar evento:", err);
+        reject("Erro ao buscar evento no banco de dados");
+        return;
+      }
+
+      if (result.length === 0) {
+        reject("Evento não encontrado");
+        return;
+      }
+
+      resolve(result[0]); // Retorna o primeiro evento encontrado
+    });
+  });
+}
+
+export function readEventosPorAdministrador(administrador_id) {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM eventos WHERE administrador_id = ?";
+    conexao.query(query, [administrador_id], (err, result) => {
+      if (err) {
+        console.error("Erro ao ler eventos do banco de dados:", err);
+        reject("Erro ao ler eventos do banco de dados");
+        return;
+      }
+      console.log("Eventos lidos do banco de dados:", result);
+      resolve(result);
+    });
+  });
+}
 export function createEvento(imagem_evento, nome, descricao, data_evento, local, administrador_id) {
   return new Promise((resolve, reject) => {
     conexao.query(

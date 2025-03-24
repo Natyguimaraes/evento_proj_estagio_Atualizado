@@ -20,7 +20,7 @@ function CadastroConvidados() {
     const carregarEventos = async () => {
       setIsLoading(true);
       try {
-        const resposta = await fetch("http://localhost:5000/api/eventos");
+        const resposta = await fetch("http://localhost:5000/api/eventos/eventos");
         const dados = await resposta.json();
         if (resposta.ok) {
           setEventos(dados); 

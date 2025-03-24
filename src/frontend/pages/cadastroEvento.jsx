@@ -5,12 +5,11 @@ import { toast } from "sonner";
 
 function CadastroEventos() {
     const navigate = useNavigate();
-    const [imagem_evento, setImagemEvento] = useState(null); // Alterado para File
+    const [imagem_evento, setImagemEvento] = useState(null);
     const [nome, setNome] = useState('');
     const [descricao, setDescricao] = useState('');
     const [dataEvento, setDataEvento] = useState('');
     const [local, setLocal] = useState('');
-    const [administrador_id, setAdministradorId] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,36 +18,34 @@ function CadastroEventos() {
         setError('');
         setSuccess('');
         setIsSubmitting(true);
-      
 
         const adminId = localStorage.getItem("adminId");
-        console.log("Admin ID recuperado do localStorage:", adminId); // Log para depuração
-      
+        console.log("Admin ID recuperado do localStorage:", adminId);
+
         if (!adminId) {
-          setError("ID do administrador não encontrado.");
-          toast.error("ID do administrador não encontrado.");
-          setIsSubmitting(false);
-          return;
+            setError("ID do administrador não encontrado.");
+            toast.error("ID do administrador não encontrado.");
+            setIsSubmitting(false);
+            return;
         }
 
         const adminIdNumber = Number(adminId);
-        console.log("Admin ID convertido para número:", adminIdNumber); 
-      
+        console.log("Admin ID convertido para número:", adminIdNumber);
+
         if (isNaN(adminIdNumber)) {
-          setError("ID do administrador inválido.");
-          toast.error("ID do administrador inválido.");
-          setIsSubmitting(false);
-          return;
+            setError("ID do administrador inválido.");
+            toast.error("ID do administrador inválido.");
+            setIsSubmitting(false);
+            return;
         }
 
-        
         const formData = new FormData();
         formData.append('imagem_evento', imagem_evento);
         formData.append('nome', nome);
         formData.append('descricao', descricao);
         formData.append('data_evento', dataEvento);
         formData.append('local', local);
-        formData.append('administrador_id', adminIdNumber); 
+        formData.append('administrador_id', adminIdNumber);
 
         console.log("Dados do FormData:", {
             nome,
@@ -62,7 +59,7 @@ function CadastroEventos() {
         try {
             const resposta = await fetch('http://localhost:5000/api/eventos', {
                 method: 'POST',
-                body: formData, 
+                body: formData,
             });
 
             const dados = await resposta.json();
@@ -139,7 +136,6 @@ function CadastroEventos() {
                                 </div>
                             </div>
                             
-                            {/* Restante do formulário */}
                             <div className="space-y-2">
                                 <label className="flex items-center text-sm font-medium text-event-text-secondary">
                                     <Sparkles className="h-4 w-4 mr-2 text-event-primary" />

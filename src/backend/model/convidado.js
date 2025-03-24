@@ -9,6 +9,19 @@ export function read() {
   });
 }
 
+export function readConvidadosPorAdministrador(administrador_id) {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM convidados WHERE administrador_id = ?";
+    conexao.query(query, [administrador_id], (err, result) => {
+      if (err) {
+        console.error("Erro ao ler convidados do banco de dados:", err);
+        reject("Erro ao ler convidados do banco de dados");
+        return;
+      }
+      resolve(result);
+    });
+  });
+}
 
 export function create(nome, telefone, email, evento_id) {
   return new Promise((resolve, reject) => {

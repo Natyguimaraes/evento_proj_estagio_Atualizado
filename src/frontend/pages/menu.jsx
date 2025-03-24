@@ -6,7 +6,6 @@ function Menu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [adminInfo, setAdminInfo] = useState(null); 
 
-
   useEffect(() => {
     const fetchAdminInfo = async () => {
       const token = localStorage.getItem("token"); 
@@ -22,6 +21,7 @@ function Menu() {
         const data = await response.json();
         if (response.ok) {
           setAdminInfo(data);
+          localStorage.setItem("adminId", data.id); // Armazena o administrador_id
         } else {
           console.error("Erro ao buscar informações do administrador:", data.message);
         }
@@ -33,7 +33,6 @@ function Menu() {
     fetchAdminInfo(); 
   }, []);
 
-  
   useEffect(() => {
     const handleEscKey = (event) => {
       if (event.key === "Escape" && isMenuOpen) {
@@ -71,13 +70,11 @@ function Menu() {
       {isMenuOpen && <div className="fixed inset-0 bg-black/20 backdrop-blur-sm" onClick={closeMenu}></div>}
 
       <nav className={`fixed top-0 left-0 h-full w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${isMenuOpen ? "translate-x-0" : "-translate-x-full"}`}>
-  
         <div className="p-5 border-b border-gray-200">
           <p className="text-xs font-medium text-gray-500">Bem-vindo(a),</p>
           <p className="text-2xl font-semibold text-indigo-600">Administrador(a)</p>
         </div>
 
-        
         {adminInfo && (
           <div className="p-5 border-t border-gray-200 bg-indigo-50 mt-4">
             <p className="text-sm font-medium text-gray-500">Plano atual:</p>

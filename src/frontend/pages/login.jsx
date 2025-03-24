@@ -32,7 +32,7 @@ function LoginAdministrador() {
   
       // Armazena o adminId no localStorage
       if (data.admin && data.admin.id) {
-        localStorage.setItem("adminId", data.admin.id.toString()); // Converte para string e armazena
+        localStorage.setItem("administrador_id", data.admin.id.toString()); // Converte para string e armazena
         console.log("Admin ID armazenado:", data.admin.id); // Log para depuração
       } else {
         throw new Error("ID do administrador não encontrado na resposta.");
@@ -40,7 +40,7 @@ function LoginAdministrador() {
   
       setMessage(data.message);
       console.log("Admin logado:", data.admin);
-  
+      
       // Redireciona para a página de eventos
       navigate("/eventos");
     } catch (error) {

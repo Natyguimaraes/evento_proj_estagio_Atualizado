@@ -12,10 +12,10 @@ const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 app.use(express.json());
 app.use(cors());
-
+// Configuração para servir arquivos estáticos
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-app.use("/api/eventos", eventoRoutes); 
+// Rotas
+app.use("/api/eventos", eventoRoutes); // Prefixo "/api" para todas as rotas de eventos
 app.use("/api/administradores", adminRoutes);
 app.use("/convidados", convidadoRoutes);
 app.use("/api/convidados", convidadoRoutes);
