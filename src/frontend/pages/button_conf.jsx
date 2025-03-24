@@ -4,7 +4,7 @@ import { QRCodeCanvas } from "qrcode.react";
 import { Check, X, MessageSquare, Clock, Calendar, MapPin } from "lucide-react";
 
 function EventCredential() {
-  const { eventoId, convidadoId } = useParams();
+  const { id, convidadoId } = useParams();
   const [evento, setEvento] = useState(null);
   const [mensagem, setMensagem] = useState("");
   const [qrCodeUrl, setQrCodeUrl] = useState("");
@@ -12,32 +12,44 @@ function EventCredential() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (!eventoId) {
+    console.log("ID do evento:", id); // Debug: verifique se o ID está correto
+    
+    if (!id) {
       console.error("Evento ID não disponível.");
       return;
     }
 
     const buscarEvento = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/eventos/eventos/${eventoId}`);
+        const response = await fetch(`http://localhost:5000/api/eventos/eventos/${id}`);
+        console.log("Resposta da API:", response); // Debug
 
-        if (!response.ok) throw new Error("Erro ao carregar evento.");
+        if (!response.ok) {
+          throw new Error(`Erro HTTP: ${response.status}`);
+        }
        
         const data = await response.json();
-        console.log("Dados do evento recebidos:", data);
+        console.log("Dados do evento recebidos:", data); // Debug
+
         if (data) {
-          setEvento(data);
+          setEvento({
+            ...data,
+            // URL direta para a imagem usando a rota estática
+            imagem_url: data.imagem_evento 
+              ? `http://localhost:5000/${data.imagem_evento.replace(/\\/g, '/')}`
+              : null
+          });
         } else {
-          console.error("Nenhum evento encontrado.");
+          console.error("Nenhum dado retornado para o evento.");
         }
       } catch (error) {
-        setMensagem("Erro ao carregar evento.");
-        console.error("Erro ao buscar evento:", error);
+        console.error("Erro completo ao buscar evento:", error);
+        setMensagem("Erro ao carregar evento. Verifique o console para detalhes.");
       }
     };
 
     buscarEvento();
-  }, [eventoId]);
+  }, [id]);
 
   const confirmarPresenca = async (status) => {
     setIsLoading(true);
@@ -86,10 +98,14 @@ function EventCredential() {
         {evento && (
           <>
             <img
-              src={`http://localhost:5000/${evento.imagem_evento}`}
-              alt="Imagem do Evento"
-              className="w-full h-40 object-cover rounded-t-2xl"
-            />
+  src={evento.imagem_url || "/imagem-padrao.jpg"}
+  alt="Imagem do Evento"
+  className="w-full h-40 object-cover rounded-t-2xl"
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = "/imagem-padrao.jpg";
+  }}
+/>
             <div className="relative z-10 p-6">
               <div className="flex items-center justify-center mb-2">
                 <Calendar className="w-8 h-8 text-[#6D7C9D] mr-2" />
@@ -98,13 +114,15 @@ function EventCredential() {
                 </h1>
               </div>
               <p className="text-center text-[#A7B6D5]">{evento.descricao || "Descrição não disponível"}</p>
-              <p className="flex items-center justify-center gap-1 text-[#B0C4D4]">
-                <MapPin className="w-4 h-4" />
-                {evento.local || "Local não informado"}
-              </p>
+            
               <p className="flex items-center justify-center gap-1 text-[#B0C4D4]">
                 <Clock className="w-4 h-4" />
                 {evento.data_evento ? new Date(evento.data_evento).toLocaleString("pt-BR") : "Data não disponível"}
+              </p>
+
+              <p className="flex items-center justify-center gap-1 text-[#B0C4D4]">
+                <MapPin className="w-4 h-4" />
+                {evento.local || "Local não informado"}
               </p>
             </div>
           </>

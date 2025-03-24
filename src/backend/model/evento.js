@@ -49,17 +49,28 @@ export function readEventosPorAdministrador(administrador_id) {
   });
 }
 export function createEvento(imagem_evento, nome, descricao, data_evento, local, administrador_id) {
+  // Mantém o caminho completo se necessário para seu sistema
+  const caminhoImagem = imagem_evento ? imagem_evento.replace(/\\/g, '/') : null;
+  
   return new Promise((resolve, reject) => {
     conexao.query(
       "INSERT INTO eventos (imagem_evento, nome, descricao, data_evento, local, administrador_id) VALUES (?, ?, ?, ?, ?, ?)",
-      [imagem_evento, nome, descricao, data_evento, local, administrador_id],
+      [caminhoImagem, nome, descricao, data_evento, local, administrador_id],
       (err, result) => {
         if (err) {
           console.error("Erro ao criar evento:", err);
           reject("Erro ao criar evento");
           return;
         }
-        resolve({ id: result.insertId, imagem_evento, nome, descricao, data_evento, local, administrador_id });
+        resolve({ 
+          id: result.insertId, 
+          imagem_evento: caminhoImagem,
+          nome, 
+          descricao, 
+          data_evento, 
+          local, 
+          administrador_id 
+        });
       }
     );
   });

@@ -15,6 +15,14 @@ import PaginaInicial from "./frontend/pages/PaginaInicial";
 import SuperAdminDashboard from "./frontend/pages/superadmin/SuperAdminDashboard";
 import CadastrarPlano from "./frontend/pages/superadmin/CadastrarPlano";
 import LiberarAdministrador from "./frontend/pages/superadmin/LiberarAdministrador";
+<Route 
+path="/credencial/:eventoId/:convidadoId" 
+element={<EventCredential />} 
+/>
+<Route 
+path="/confirmacao/:convidadoId" 
+element={<ButtonConf />} 
+/>
 
 function App() {
   return (
@@ -41,6 +49,7 @@ function App() {
         <Route path="/confirmacao" element={<Confirmacao />} />
         <Route path="/eventos" element={<Eventos />} />
         <Route path="/confirmacao/:convidadoId" element={<ButtonConf />} />
+        <Route path="/eventos/:id/convidados/:convidadoId" element={<EventCredential />} />
       </Routes>
     </Router>
   );

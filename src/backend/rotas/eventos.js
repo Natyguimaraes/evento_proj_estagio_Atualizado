@@ -6,6 +6,7 @@ import {
   createEventoController,
   updateEventoController,
   deleteEventoController,
+  getImagemEvento
 } from "../controller/evento.js";
 import multer from "multer";
 import path from "path";
@@ -24,22 +25,22 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Rota: GET /api/eventos
+
 router.get("/eventos", getAllEventos);
 
 router.get("/eventos/:id", getEventoPorId);
 
-// Rota: GET /api/eventos/por-administrador?administrador_id=24
+router.get("/eventos/:id/imagem", getImagemEvento);
+
 router.get("/por-administrador", getEventosPorAdministrador);
 
 
-// Rota: POST /api/eventos
 router.post("/", upload.single("imagem_evento"), createEventoController);
 
-// Rota: PUT /api/eventos/:id
+
 router.put("/:id", updateEventoController);
 
-// Rota: DELETE /api/eventos/:id
+
 router.delete("/:id", deleteEventoController);
 
 
